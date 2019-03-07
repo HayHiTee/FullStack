@@ -11,14 +11,14 @@ class Department(models.Model):
 class Category(models.Model):
     department_id = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='related_category_department')
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100, null=True, default='')
+    description = models.CharField(max_length=200, null=True, default='')
 
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
-    price = models.DecimalField(decimal_places=2)
-    discounted_price = models.DecimalField(decimal_places=2, default=0.00)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    discounted_price = models.DecimalField(max_digits=10,decimal_places=2, default=0.00)
     image = models.ImageField()
     image_2 = models.ImageField()
     thumbnail = models.ImageField()
@@ -27,9 +27,9 @@ class Product(models.Model):
 
 class ProductCategory(models.Model):
     class Meta:
-        unique_together = (('product', 'category'),)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='related_product')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='related_category')
+        unique_together = (('product_id', 'category_id'),)
+    product_id = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='related_product')
+    category_id = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='related_category')
 
 
 class Attribute(models.Model):
@@ -106,7 +106,7 @@ class Orders(models.Model):
 
 
 class OrderDetail(models.Model):
-    order = models.ForeignKey(Orders)
+    order = models.ForeignKey(Orders, on_delete='order_detail_related_order')
     product_id = models.IntegerField()
     attributes = models.CharField(max_length=1000)
     product_name = models.CharField(max_length=100)

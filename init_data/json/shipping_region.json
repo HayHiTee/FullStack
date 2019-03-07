@@ -1,0 +1,4 @@
+[{"id":1, "shipping_region":"Please Select"},
+ {"id":2, "shipping_region":"US / Canada"},
+ {"id":3, "shipping_region":"Europe"},
+ {"id":4, "shipping_region":"Rest of World"}]
