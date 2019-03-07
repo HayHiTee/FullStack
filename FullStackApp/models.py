@@ -9,7 +9,7 @@ class Department(models.Model):
 
 
 class Category(models.Model):
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='related_category_department')
+    department_id = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='related_category_department')
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100, null=True, default='')
 
@@ -37,24 +37,31 @@ class Attribute(models.Model):
 
 
 class AttributeValue(models.Model):
-    attribute = models.OneToOneField(Attribute, on_delete=models.CASCADE)
+    attribute_id = models.ForeignKey(Attribute, on_delete=models.CASCADE,
+                                     related_name='attribute_value_related_attribute')
+    value = models.CharField(max_length=100)
     pass
 
 
 class ProductAttribute(models.Model):
     class Meta:
-        unique_together = (('product', 'attribute_value'),)
-    product = models.ForeignKey(Product)
-    attribute_value = models.ForeignKey(AttributeValue)
+        unique_together = (('product_id', 'attribute_value_id'),)
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_attribute_related_product')
+    attribute_value_id = models.ForeignKey(AttributeValue, on_delete=models.CASCADE,
+                                           related_name='product_attribute_related_attribute_value')
 
 
 class ShoppingCart(models.Model):
     cart_id = models.CharField(max_length=32)
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    product_id = models.OneToOneField(Product, on_delete=models.CASCADE)
     attributes = models.CharField(max_length=1000)
     quantity = models.IntegerField()
     buy_now = models.BooleanField(default=True)
     added_on = models.DateTimeField(auto_now_add=True)
+
+
+class ShippingRegion(models.Model):
+    shipping_region = models.CharField(max_length=100)
 
 
 class Customer(AbstractUser):
@@ -65,11 +72,24 @@ class Customer(AbstractUser):
     region = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
-   # shipping_region = models.ForeignKey(ShippingRegion)
+    shipping_region_id = models.ForeignKey(ShippingRegion,
+                                           on_delete=models.CASCADE, related_name='customer_related_shipping_region')
     day_phone = models.CharField(max_length=100)
     eve_phone = models.CharField(max_length=100)
     mob_phone = models.CharField(max_length=100)
     pass
+
+
+class Shipping(models.Model):
+    shipping_type = models.CharField(max_length=100)
+    shipping_cost = models.DecimalField(max_digits=10, decimal_places=2)
+    shipping_region_id = models.ForeignKey(ShippingRegion,
+                                           on_delete=models.CASCADE, related_name='shipping_related_region')
+
+
+class Tax(models.Model):
+    tax_type = models.CharField(max_length=100)
+    tax_percentage = models.DecimalField(max_digits=10, decimal_places=2)
 
 
 class Orders(models.Model):
@@ -77,12 +97,12 @@ class Orders(models.Model):
     created_on = models.DateTimeField()
     shipped_on = models.DateTimeField(null=True)
     status = models.IntegerField(default=0)
-    comments = models.CharField(max_length=255)
-    # customer_id = models.IntegerField()
-    auth_code = models.CharField(max_length=50)
-    reference = models.CharField(max_length=50)
-    # shipping_id = models.
-    # tax_id
+    comments = models.CharField(max_length=255, null=True)
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='orders_related_customer')
+    auth_code = models.CharField(max_length=50, null=True)
+    reference = models.CharField(max_length=50, null=True)
+    shipping_id = models.ForeignKey(Shipping, on_delete=models.CASCADE, related_name='orders_related_shipping')
+    tax_id = models.ForeignKey(Tax, on_delete=models.CASCADE, related_name='orders_related_tax')
 
 
 class OrderDetail(models.Model):
@@ -94,30 +114,17 @@ class OrderDetail(models.Model):
     unit_cost = models.DecimalField(max_digits=10, decimal_places=2)
     pass
 
-class ShippingRegion(models.Model):
-    shipping_region = models.CharField(max_length=100)
-
-
-class Shipping(models.Model):
-    shipping_type = models.CharField(max_length=100)
-    shipping_cost = models.DecimalField(max_digits=10, decimal_places=2)
-    shipping_region_id = models.ForeignKey(ShippingRegion)
-
-class Tax(models.Model):
-    tax_type = models.CharField(max_length=100)
-    tax_percentage = models.DecimalField(max_digits=10, decimal_places=2)
-
 
 class Audit(models.Model):
-    order_id = models.ForeignKey(Orders)
+    order_id = models.ForeignKey(Orders, on_delete=models.CASCADE, related_name='audit_related_order')
     created_on = models.DateTimeField(blank=True, auto_now_add=True)
     message = models.TextField()
     code = models.IntegerField()
 
 
 class ReviewTable(models.Model):
-    customer_id = models.ForeignKey(Customer)
-    product_id = models.ForeignKey(Product)
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='review_table_related_customer')
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='review_table_related_product')
     review = models.TextField()
     rating = models.SmallIntegerField()
     created_on = models.DateTimeField(auto_now_add=True, blank=True)
