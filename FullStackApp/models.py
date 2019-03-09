@@ -9,7 +9,7 @@ class Department(models.Model):
 
 
 class Category(models.Model):
-    department_id = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='related_category_department')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='related_category_department')
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200, null=True, default='')
 
@@ -27,9 +27,9 @@ class Product(models.Model):
 
 class ProductCategory(models.Model):
     class Meta:
-        unique_together = (('product_id', 'category_id'),)
-    product_id = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='related_product')
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='related_category')
+        unique_together = (('product', 'category'),)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='related_product')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='related_category')
 
 
 class Attribute(models.Model):
@@ -37,7 +37,7 @@ class Attribute(models.Model):
 
 
 class AttributeValue(models.Model):
-    attribute_id = models.ForeignKey(Attribute, on_delete=models.CASCADE,
+    attribute = models.ForeignKey(Attribute, on_delete=models.CASCADE,
                                      related_name='attribute_value_related_attribute')
     value = models.CharField(max_length=100)
     pass
@@ -45,15 +45,15 @@ class AttributeValue(models.Model):
 
 class ProductAttribute(models.Model):
     class Meta:
-        unique_together = (('product_id', 'attribute_value_id'),)
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_attribute_related_product')
-    attribute_value_id = models.ForeignKey(AttributeValue, on_delete=models.CASCADE,
+        unique_together = (('product', 'attribute_value'),)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_attribute_related_product')
+    attribute_value = models.ForeignKey(AttributeValue, on_delete=models.CASCADE,
                                            related_name='product_attribute_related_attribute_value')
 
 
 class ShoppingCart(models.Model):
     cart_id = models.CharField(max_length=32)
-    product_id = models.OneToOneField(Product, on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
     attributes = models.CharField(max_length=1000)
     quantity = models.IntegerField()
     buy_now = models.BooleanField(default=True)
@@ -72,7 +72,7 @@ class Customer(AbstractUser):
     region = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
-    shipping_region_id = models.ForeignKey(ShippingRegion,
+    shipping_region = models.ForeignKey(ShippingRegion,
                                            on_delete=models.CASCADE, related_name='customer_related_shipping_region')
     day_phone = models.CharField(max_length=100)
     eve_phone = models.CharField(max_length=100)
@@ -83,13 +83,16 @@ class Customer(AbstractUser):
 class Shipping(models.Model):
     shipping_type = models.CharField(max_length=100)
     shipping_cost = models.DecimalField(max_digits=10, decimal_places=2)
-    shipping_region_id = models.ForeignKey(ShippingRegion,
+    shipping_region = models.ForeignKey(ShippingRegion,
                                            on_delete=models.CASCADE, related_name='shipping_related_region')
 
 
 class Tax(models.Model):
     tax_type = models.CharField(max_length=100)
     tax_percentage = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return "{} {}".format(self.tax_type, self.tax_percentage)
 
 
 class Orders(models.Model):
@@ -98,16 +101,16 @@ class Orders(models.Model):
     shipped_on = models.DateTimeField(null=True)
     status = models.IntegerField(default=0)
     comments = models.CharField(max_length=255, null=True)
-    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='orders_related_customer')
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='orders_related_customer')
     auth_code = models.CharField(max_length=50, null=True)
     reference = models.CharField(max_length=50, null=True)
-    shipping_id = models.ForeignKey(Shipping, on_delete=models.CASCADE, related_name='orders_related_shipping')
-    tax_id = models.ForeignKey(Tax, on_delete=models.CASCADE, related_name='orders_related_tax')
+    shipping = models.ForeignKey(Shipping, on_delete=models.CASCADE, related_name='orders_related_shipping')
+    tax = models.ForeignKey(Tax, on_delete=models.CASCADE, related_name='orders_related_tax')
 
 
 class OrderDetail(models.Model):
     order = models.ForeignKey(Orders, on_delete='order_detail_related_order')
-    product_id = models.IntegerField()
+    product = models.ForeignKey(Product, on_delete='order_detail_related_product')
     attributes = models.CharField(max_length=1000)
     product_name = models.CharField(max_length=100)
     quantity = models.IntegerField()
@@ -116,15 +119,15 @@ class OrderDetail(models.Model):
 
 
 class Audit(models.Model):
-    order_id = models.ForeignKey(Orders, on_delete=models.CASCADE, related_name='audit_related_order')
+    order = models.ForeignKey(Orders, on_delete=models.CASCADE, related_name='audit_related_order')
     created_on = models.DateTimeField(blank=True, auto_now_add=True)
     message = models.TextField()
     code = models.IntegerField()
 
 
 class ReviewTable(models.Model):
-    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='review_table_related_customer')
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='review_table_related_product')
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='review_table_related_customer')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='review_table_related_product')
     review = models.TextField()
     rating = models.SmallIntegerField()
     created_on = models.DateTimeField(auto_now_add=True, blank=True)
