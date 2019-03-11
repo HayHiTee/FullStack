@@ -13,6 +13,9 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200, null=True, default='')
 
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
@@ -24,12 +27,22 @@ class Product(models.Model):
     thumbnail = models.ImageField()
     display = models.SmallIntegerField(default=0)
 
+    def get_categories_string(self):
+        categories = ''
+        qs = self.related_product.all()
+        for q in qs:
+            categories += '{} '.format(q.category)
+        print(categories)
+        return categories
+
 
 class ProductCategory(models.Model):
     class Meta:
         unique_together = (('product', 'category'),)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='related_product')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='related_category')
+
+
 
 
 class Attribute(models.Model):
