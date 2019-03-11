@@ -9,7 +9,8 @@ class Department(models.Model):
 
 
 class Category(models.Model):
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='related_category_department')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE,
+                                   related_name='related_category_department')
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=200, null=True, default='')
 
@@ -21,7 +22,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    discounted_price = models.DecimalField(max_digits=10,decimal_places=2, default=0.00)
+    discounted_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     image = models.ImageField()
     image_2 = models.ImageField()
     thumbnail = models.ImageField()
@@ -41,8 +42,6 @@ class ProductCategory(models.Model):
         unique_together = (('product', 'category'),)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='related_product')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='related_category')
-
-
 
 
 class Attribute(models.Model):
