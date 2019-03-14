@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -76,7 +76,7 @@ class ShippingRegion(models.Model):
     shipping_region = models.CharField(max_length=100)
 
 
-class Customer(AbstractUser):
+class Customer(models.Model):
     credit_card = models.TextField(null=True)
     address_1 = models.CharField(max_length=100)
     address_2 = models.CharField(max_length=100)

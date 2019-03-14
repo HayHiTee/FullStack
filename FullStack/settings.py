@@ -26,7 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'FullStackApp.Customer'
+# AUTH_USER_MODEL = 'FullStackApp.Customer'
 
 # Application definition
 
