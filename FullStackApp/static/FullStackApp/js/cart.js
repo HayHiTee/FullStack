@@ -105,6 +105,7 @@ $(document).ready(function()
 				var sub = qty.find('.qty_sub');
 				var add = qty.find('.qty_add');
 				var num = qty.find('.product_num');
+				var num_input = qty.find('.product_num_input')
 				var original;
 				var newValue;
 
@@ -116,6 +117,8 @@ $(document).ready(function()
 							newValue = original - 1;
 						}
 					num.text(newValue);
+					num_input.val(newValue);
+					num_input.change()
 				});
 
 				add.on('click', function()
@@ -123,6 +126,8 @@ $(document).ready(function()
 					original = parseFloat(qty.find('.product_num').text());
 					newValue = original + 1;
 					num.text(newValue);
+					num_input.val(newValue);
+					num_input.change()
 				});
 			});
 		}

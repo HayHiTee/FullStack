@@ -74,10 +74,10 @@
             <!-- Navigation -->
             <nav class="header_nav">
                 <ul class="d-flex flex-row align-items-center justify-content-start">
-                    <li><a href="index.html">home</a></li>
-                    <li><a href="#">woman</a></li>
-                    <li><a href="#">man</a></li>
-                    <li><a href="#">lookbook</a></li>
+                    <li><a href="{% url 'FullStackApp:home' %}">home</a></li>
+                    <li><a href="{% url 'FullStackApp:product-category' %}?categories=French">french</a></li>
+                    <li><a href="{% url 'FullStackApp:product-category' %}?categories=italian">italian</a></li>
+                    <li><a href="{% url 'FullStackApp:product-category' %}?categories=christmas">christmas</a></li>
                     <li><a href="#">blog</a></li>
                     <li><a href="#">contact</a></li>
                 </ul>
@@ -144,9 +144,9 @@
 
                 <!-- Cart -->
                 <div class="cart d-flex flex-row align-items-center justify-content-start">
-                    <div class="cart_icon"><a href="cart.html">
+                    <div class="cart_icon"><a href={% url 'FullStackApp:carts' %}>
                         <img src="{% static 'FullStackApp/images/bag.png' %}" alt="">
-                        <div class="cart_num">2</div>
+                        <div class="cart_num">{{ carts_processor.items_number }}</div>
                     </a></div>
                 </div>
 
@@ -233,12 +233,12 @@
         </div>
         <nav class="menu_nav">
             <ul class="menu_mm">
-                <li class="menu_mm"><a href="index.html">home</a></li>
-                <li class="menu_mm"><a href="#">woman</a></li>
-                <li class="menu_mm"><a href="#">man</a></li>
-                <li class="menu_mm"><a href="#">lookbook</a></li>
-                <li class="menu_mm"><a href="blog.html">blog</a></li>
-                <li class="menu_mm"><a href="contact.html">contact</a></li>
+                <li class="menu_mm"><a href="{% url 'FullStackApp:home' %}">home</a></li>
+                <li class="menu_mm"><a href="{% url 'FullStackApp:product-category' %}?categories=French">French</a></li>
+                <li class="menu_mm"><a href="{% url 'FullStackApp:product-category' %}?categories=Italian">Italian</a></li>
+                <li class="menu_mm"><a href="{% url 'FullStackApp:product-category' %}?categories=Christmas">Christmas</a></li>
+                <li class="menu_mm"><a href="#">blog</a></li>
+                <li class="menu_mm"><a href="#">contact</a></li>
             </ul>
         </nav>
         <div class="menu_extra">
@@ -330,10 +330,10 @@
         <!-- Sidebar Navigation -->
         <nav class="sidebar_nav">
             <ul>
-                <li><a href="index.html">home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                <li><a href="#">woman<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                <li><a href="#">man<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                <li><a href="#">lookbook<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                <li><a href="{% url 'FullStackApp:home' %}">home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                <li><a href="{% url 'FullStackApp:product-category' %}?categories=French">french<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                <li><a href="{% url 'FullStackApp:product-category' %}?categories=Italian">Italian<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                <li><a href="{% url 'FullStackApp:product-category' %}?categories=Christmas">christmas<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
                 <li><a href="blog.html">blog<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
                 <li><a href="#">contact<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
             </ul>
@@ -347,14 +347,15 @@
             </form>
         </div>
 
+
         <!-- Cart -->
         <div class="cart d-flex flex-row align-items-center justify-content-start">
-            <div class="cart_icon"><a href="cart.html">
+            <div class="cart_icon"><a href="{% url 'FullStackApp:carts' %}">
                 <img src="{% static 'FullStackApp/images/bag.png' %}" alt="">
-                <div class="cart_num">2</div>
+                <div class="cart_num">{{ carts_processor.items_number }}</div>
             </a></div>
-            <div class="cart_text">bag</div>
-            <div class="cart_price">$39.99 (1)</div>
+            <div class="cart_text">Carts</div>
+            <div class="cart_price">${{ carts_processor.total_price }} ({{ carts_processor.items_number }})</div>
         </div>
     </div>
 

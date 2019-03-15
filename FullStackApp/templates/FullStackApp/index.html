@@ -2,10 +2,6 @@
 {% load static %}
 
 {% block linked_style %}
-
-    <link rel="stylesheet" type="text/css"
-          href="{% static 'FullStackApp/plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/plugins/OwlCarousel2-2.2.1/animate.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/styles/main_styles.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/styles/responsive.css' %}">
 {% endblock %}
@@ -25,7 +21,8 @@
 
                 <!-- Slide -->
                 <div class="owl-item">
-                    <div class="background_image" style="background-image:url({% static 'FullStackApp/images/home_slider_1.jpg' %})"></div>
+                    <div class="background_image"
+                         style="background-image:url({% static 'FullStackApp/images/home_slider_1.jpg' %})"></div>
                     <div class="home_content_container">
                         <div class="home_content">
                             <div class="home_discount d-flex flex-row align-items-end justify-content-start">
@@ -33,7 +30,7 @@
                                 <div class="home_discount_text">Discount on the</div>
                             </div>
                             <div class="home_title">New Collection</div>
-                            <div class="button button_1 home_button trans_200"><a href="categories.html">Shop NOW!</a>
+                            <div class="button button_1 home_button trans_200"><a href="{% url 'FullStackApp:product-category' %}">Shop NOW!</a>
                             </div>
                         </div>
                     </div>
@@ -41,7 +38,8 @@
 
                 <!-- Slide -->
                 <div class="owl-item">
-                    <div class="background_image" style="background-image:url({% static 'FullStackApp/images/home_slider_1.jpg' %})"></div>
+                    <div class="background_image"
+                         style="background-image:url({% static 'FullStackApp/images/home_slider_1.jpg' %})"></div>
                     <div class="home_content_container">
                         <div class="home_content">
                             <div class="home_discount d-flex flex-row align-items-end justify-content-start">
@@ -49,7 +47,7 @@
                                 <div class="home_discount_text">Discount on the</div>
                             </div>
                             <div class="home_title">New Collection</div>
-                            <div class="button button_1 home_button trans_200"><a href="categories.html">Shop NOW!</a>
+                            <div class="button button_1 home_button trans_200"><a href="{% url 'FullStackApp:product-category' %}">Shop NOW!</a>
                             </div>
                         </div>
                     </div>
@@ -57,7 +55,8 @@
 
                 <!-- Slide -->
                 <div class="owl-item">
-                    <div class="background_image" style="background-image:url({% static 'FullStackApp/images/home_slider_1.jpg' %})"></div>
+                    <div class="background_image"
+                         style="background-image:url({% static 'FullStackApp/images/home_slider_1.jpg' %})"></div>
                     <div class="home_content_container">
                         <div class="home_content">
                             <div class="home_discount d-flex flex-row align-items-end justify-content-start">
@@ -65,7 +64,7 @@
                                 <div class="home_discount_text">Discount on the</div>
                             </div>
                             <div class="home_title">New Collection</div>
-                            <div class="button button_1 home_button trans_200"><a href="categories.html">Shop NOW!</a>
+                            <div class="button button_1 home_button trans_200"><a href="{% url 'FullStackApp:product-category' %}">Shop NOW!</a>
                             </div>
                         </div>
                     </div>
@@ -76,12 +75,14 @@
 
             <!-- Home Slider Navigation -->
             <div class="home_slider_nav home_slider_prev trans_200">
-                <div class=" d-flex flex-column align-items-center justify-content-center"><img src="{% static 'FullStackApp/images/prev.png' %}"
-                                                                                                alt=""></div>
+                <div class=" d-flex flex-column align-items-center justify-content-center"><img
+                        src="{% static 'FullStackApp/images/prev.png' %}"
+                        alt=""></div>
             </div>
             <div class="home_slider_nav home_slider_next trans_200">
-                <div class=" d-flex flex-column align-items-center justify-content-center"><img src="{% static 'FullStackApp/images/next.png' %}"
-                                                                                                alt=""></div>
+                <div class=" d-flex flex-column align-items-center justify-content-center"><img
+                        src="{% static 'FullStackApp/images/next.png' %}"
+                        alt=""></div>
             </div>
 
         </div>
@@ -98,7 +99,7 @@
                     <div class="col-lg-4 box_col">
                         <div class="box">
                             <div class="box_image"><img src="{% static 'FullStackApp/images/box_1.jpg' %}" alt=""></div>
-                            <div class="box_title trans_200"><a href="categories.html">summer collection</a></div>
+                            <div class="box_title trans_200"><a href="#">summer collection</a></div>
                         </div>
                     </div>
 
@@ -106,7 +107,7 @@
                     <div class="col-lg-4 box_col">
                         <div class="box">
                             <div class="box_image"><img src="{% static 'FullStackApp/images/box_2.jpg' %}" alt=""></div>
-                            <div class="box_title trans_200"><a href="categories.html">eyewear collection</a></div>
+                            <div class="box_title trans_200"><a href="#">eyewear collection</a></div>
                         </div>
                     </div>
 
@@ -114,7 +115,7 @@
                     <div class="col-lg-4 box_col">
                         <div class="box">
                             <div class="box_image"><img src="{% static 'FullStackApp/images/box_3.jpg' %}" alt=""></div>
-                            <div class="box_title trans_200"><a href="categories.html">basic pieces</a></div>
+                            <div class="box_title trans_200"><a href="#">basic pieces</a></div>
                         </div>
                     </div>
 
@@ -145,6 +146,7 @@
 
     <!-- Products -->
 
+
     <div class="products">
         <div class="section_container">
             <div class="container">
@@ -152,146 +154,160 @@
                     <div class="col">
                         <div class="products_container grid">
 
-                            <!-- Product -->
 
                             {% for product in products %}
+                                <!-- Product -->
+
                                 <div class="product grid-item ">
-                                <div class="product_inner">
-                                    <div class="product_image">
-                                        <img src="{{ product.image.url }}" alt="">
-                                        <div class="product_tag">hot</div>
-                                    </div>
-                                    <div class="product_content text-center">
-                                        <div class="product_title"><a href="{%  url 'FullStackApp:product-detail' product.pk %}">{{ product.name }}</a></div>
-                                        <div class="product_price">${{ product.price }}</div>
-                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to
-                                            cart</a></div>
+                                    <div class="product_inner">
+                                        <div class="product_image">
+                                            <img src="{{ product.image.url }}" alt="" width="510px">
+                                            <div class="product_tag">hot</div>
+                                        </div>
+                                        <div class="product_content text-center">
+                                            <div class="product_title"><a
+                                                    href="{% url 'FullStackApp:product-detail' product.pk %}">{{ product.name }}</a>
+                                            </div>
+                                            <div class="product_price">${{ product.price }}</div>
+
+                                            <form action="{% url 'FullStackApp:product-add' product.pk %}"
+                                                  method="post">
+                                                {% csrf_token %}
+
+                                                {{ product_form.update }}
+                                                {{ product_form.quantity }}
+                                                <button type="submit"
+                                                        class="btn product_button ml-auto mr-auto trans_200">
+                                                    add to cart
+                                                </button>
+                                            </form>
+
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
                             {% endfor %}
-{#                            <div class="product grid-item hot">#}
-{#                                <div class="product_inner">#}
-{#                                    <div class="product_image">#}
-{#                                        <img src="{% static 'FullStackApp/images/product_1.jpg' %}" alt="">#}
-{#                                        <div class="product_tag">hot</div>#}
-{#                                    </div>#}
-{#                                    <div class="product_content text-center">#}
-{#                                        <div class="product_title"><a href="product.html">long red shirt</a></div>#}
-{#                                        <div class="product_price">$39.90</div>#}
-{#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
-{#                                            cart</a></div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{##}
-{#                            <!-- Product -->#}
-{#                            <div class="product grid-item">#}
-{#                                <div class="product_inner">#}
-{#                                    <div class="product_image"><img#}
-{#                                            src="{% static 'FullStackApp/images/product_2.jpg' %}" alt=""></div>#}
-{#                                    <div class="product_content text-center">#}
-{#                                        <div class="product_title"><a href="product.html">hype grey shirt</a></div>#}
-{#                                        <div class="product_price">$19.50</div>#}
-{#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
-{#                                            cart</a></div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{##}
-{#                            <!-- Product -->#}
-{#                            <div class="product grid-item sale">#}
-{#                                <div class="product_inner">#}
-{#                                    <div class="product_image">#}
-{#                                        <img src="{% static 'FullStackApp/images/product_3.jpg' %}" alt="">#}
-{#                                        <div class="product_tag">sale</div>#}
-{#                                    </div>#}
-{#                                    <div class="product_content text-center">#}
-{#                                        <div class="product_title"><a href="product.html">long sleeve jacket</a></div>#}
-{#                                        <div class="product_price">$32.20<span>RRP 64.40</span></div>#}
-{#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
-{#                                            cart</a></div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{##}
-{#                            <!-- Product -->#}
-{#                            <div class="product grid-item">#}
-{#                                <div class="product_inner">#}
-{#                                    <div class="product_image">#}
-{#                                        <img src="{% static 'FullStackApp/images/product_4.jpg' %}" alt="">#}
-{#                                    </div>#}
-{#                                    <div class="product_content text-center">#}
-{#                                        <div class="product_title"><a href="product.html">denim men shirt</a></div>#}
-{#                                        <div class="product_price">$59.90</div>#}
-{#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
-{#                                            cart</a></div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{##}
-{#                            <!-- Product -->#}
-{#                            <div class="product grid-item">#}
-{#                                <div class="product_inner">#}
-{#                                    <div class="product_image">#}
-{#                                        <img src="{% static 'FullStackApp/images/product_5.jpg' %}" alt="">#}
-{#                                    </div>#}
-{#                                    <div class="product_content text-center">#}
-{#                                        <div class="product_title"><a href="product.html">long red shirt</a></div>#}
-{#                                        <div class="product_price">$79.90</div>#}
-{#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
-{#                                            cart</a></div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{##}
-{#                            <!-- Product -->#}
-{#                            <div class="product grid-item new">#}
-{#                                <div class="product_inner">#}
-{#                                    <div class="product_image">#}
-{#                                        <img src="{% static 'FullStackApp/images/product_6.jpg' %}" alt="">#}
-{#                                        <div class="product_tag">new</div>#}
-{#                                    </div>#}
-{#                                    <div class="product_content text-center">#}
-{#                                        <div class="product_title"><a href="product.html">hype grey shirt</a></div>#}
-{#                                        <div class="product_price">$59.90</div>#}
-{#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
-{#                                            cart</a></div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{##}
-{#                            <!-- Product -->#}
-{#                            <div class="product grid-item">#}
-{#                                <div class="product_inner">#}
-{#                                    <div class="product_image">#}
-{#                                        <img src="{% static 'FullStackApp/images/product_7.jpg' %}" alt="">#}
-{#                                    </div>#}
-{#                                    <div class="product_content text-center">#}
-{#                                        <div class="product_title"><a href="product.html">long sleeve jacket</a></div>#}
-{#                                        <div class="product_price">$15.90</div>#}
-{#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
-{#                                            cart</a></div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{##}
-{#                            <!-- Product -->#}
-{#                            <div class="product grid-item sale">#}
-{#                                <div class="product_inner">#}
-{#                                    <div class="product_image">#}
-{#                                        <img src="{% static 'FullStackApp/images/product_8.jpg' %}" alt="">#}
-{#                                        <div class="product_tag">sale</div>#}
-{#                                    </div>#}
-{#                                    <div class="product_content text-center">#}
-{#                                        <div class="product_title"><a href="product.html">denim men shirt</a></div>#}
-{#                                        <div class="product_price">$43.99<span>RRP 64.40</span></div>#}
-{#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
-{#                                            cart</a></div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
+                            {#                            <div class="product grid-item hot">#}
+                            {#                                <div class="product_inner">#}
+                            {#                                    <div class="product_image">#}
+                            {#                                        <img src="{% static 'FullStackApp/images/product_1.jpg' %}" alt="">#}
+                            {#                                        <div class="product_tag">hot</div>#}
+                            {#                                    </div>#}
+                            {#                                    <div class="product_content text-center">#}
+                            {#                                        <div class="product_title"><a href="product.html">long red shirt</a></div>#}
+                            {#                                        <div class="product_price">$39.90</div>#}
+                            {#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
+                            {#                                            cart</a></div>#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            {##}
+                            {#                            <!-- Product -->#}
+                            {#                            <div class="product grid-item">#}
+                            {#                                <div class="product_inner">#}
+                            {#                                    <div class="product_image"><img#}
+                            {#                                            src="{% static 'FullStackApp/images/product_2.jpg' %}" alt=""></div>#}
+                            {#                                    <div class="product_content text-center">#}
+                            {#                                        <div class="product_title"><a href="product.html">hype grey shirt</a></div>#}
+                            {#                                        <div class="product_price">$19.50</div>#}
+                            {#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
+                            {#                                            cart</a></div>#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            {##}
+                            {#                            <!-- Product -->#}
+                            {#                            <div class="product grid-item sale">#}
+                            {#                                <div class="product_inner">#}
+                            {#                                    <div class="product_image">#}
+                            {#                                        <img src="{% static 'FullStackApp/images/product_3.jpg' %}" alt="">#}
+                            {#                                        <div class="product_tag">sale</div>#}
+                            {#                                    </div>#}
+                            {#                                    <div class="product_content text-center">#}
+                            {#                                        <div class="product_title"><a href="product.html">long sleeve jacket</a></div>#}
+                            {#                                        <div class="product_price">$32.20<span>RRP 64.40</span></div>#}
+                            {#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
+                            {#                                            cart</a></div>#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            {##}
+                            {#                            <!-- Product -->#}
+                            {#                            <div class="product grid-item">#}
+                            {#                                <div class="product_inner">#}
+                            {#                                    <div class="product_image">#}
+                            {#                                        <img src="{% static 'FullStackApp/images/product_4.jpg' %}" alt="">#}
+                            {#                                    </div>#}
+                            {#                                    <div class="product_content text-center">#}
+                            {#                                        <div class="product_title"><a href="product.html">denim men shirt</a></div>#}
+                            {#                                        <div class="product_price">$59.90</div>#}
+                            {#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
+                            {#                                            cart</a></div>#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            {##}
+                            {#                            <!-- Product -->#}
+                            {#                            <div class="product grid-item">#}
+                            {#                                <div class="product_inner">#}
+                            {#                                    <div class="product_image">#}
+                            {#                                        <img src="{% static 'FullStackApp/images/product_5.jpg' %}" alt="">#}
+                            {#                                    </div>#}
+                            {#                                    <div class="product_content text-center">#}
+                            {#                                        <div class="product_title"><a href="product.html">long red shirt</a></div>#}
+                            {#                                        <div class="product_price">$79.90</div>#}
+                            {#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
+                            {#                                            cart</a></div>#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            {##}
+                            {#                            <!-- Product -->#}
+                            {#                            <div class="product grid-item new">#}
+                            {#                                <div class="product_inner">#}
+                            {#                                    <div class="product_image">#}
+                            {#                                        <img src="{% static 'FullStackApp/images/product_6.jpg' %}" alt="">#}
+                            {#                                        <div class="product_tag">new</div>#}
+                            {#                                    </div>#}
+                            {#                                    <div class="product_content text-center">#}
+                            {#                                        <div class="product_title"><a href="product.html">hype grey shirt</a></div>#}
+                            {#                                        <div class="product_price">$59.90</div>#}
+                            {#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
+                            {#                                            cart</a></div>#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            {##}
+                            {#                            <!-- Product -->#}
+                            {#                            <div class="product grid-item">#}
+                            {#                                <div class="product_inner">#}
+                            {#                                    <div class="product_image">#}
+                            {#                                        <img src="{% static 'FullStackApp/images/product_7.jpg' %}" alt="">#}
+                            {#                                    </div>#}
+                            {#                                    <div class="product_content text-center">#}
+                            {#                                        <div class="product_title"><a href="product.html">long sleeve jacket</a></div>#}
+                            {#                                        <div class="product_price">$15.90</div>#}
+                            {#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
+                            {#                                            cart</a></div>#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            {##}
+                            {#                            <!-- Product -->#}
+                            {#                            <div class="product grid-item sale">#}
+                            {#                                <div class="product_inner">#}
+                            {#                                    <div class="product_image">#}
+                            {#                                        <img src="{% static 'FullStackApp/images/product_8.jpg' %}" alt="">#}
+                            {#                                        <div class="product_tag">sale</div>#}
+                            {#                                    </div>#}
+                            {#                                    <div class="product_content text-center">#}
+                            {#                                        <div class="product_title"><a href="product.html">denim men shirt</a></div>#}
+                            {#                                        <div class="product_price">$43.99<span>RRP 64.40</span></div>#}
+                            {#                                        <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to#}
+                            {#                                            cart</a></div>#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
 
                         </div>
 
@@ -301,35 +317,35 @@
 
                 </div>
             </div>
-        <section>
+            <section>
 
-                            {% if is_paginated %}
-                                <p class="text-success">
-                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                                </p>
-                                <ul class="pagination">
-                                    {% if page_obj.has_previous %}
-                                        <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
-                                    {% else %}
-                                        <li class="disabled"><span>&laquo;</span></li>
-                                    {% endif %}
-                                    {% for i in paginator.page_range %}
-                                        {% if page_obj.number == i %}
-                                            <li ><a class="active" href="#">{{ i }}</a> <span
-                                                    class="sr-only">(current)</span></li>
-                                        {% else %}
-                                            <li><a href="?page={{ i }}">{{ i }}</a></li>
-                                        {% endif %}
-                                    {% endfor %}
-                                    {% if page_obj.has_next %}
-                                        <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
-                                    {% else %}
-                                        <li class="disabled"><span>&raquo;</span></li>
-                                    {% endif %}
-                                </ul>
+                {% if is_paginated %}
+                    <p class="text-success">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </p>
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                            <li class="disabled"><span>&laquo;</span></li>
+                        {% endif %}
+                        {% for i in paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li><a class="active" href="#">{{ i }}</a> <span
+                                        class="sr-only">(current)</span></li>
+                            {% else %}
+                                <li><a href="?page={{ i }}">{{ i }}</a></li>
                             {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                            <li class="disabled"><span>&raquo;</span></li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
 
-                        </section>
+            </section>
         </div>
 
     </div>

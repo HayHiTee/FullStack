@@ -2,174 +2,289 @@
 {% load static %}
 {% block linked_style %}
 
-    <link rel="stylesheet" type="text/css"
-          href="{% static 'FullStackApp/plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/plugins/OwlCarousel2-2.2.1/animate.css' %}">
+
     <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/styles/cart.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/styles/cart_responsive.css' %}">
 {% endblock %}
 
 {% block linked_script %}
     <script src="{% static 'FullStackApp/js/cart.js' %}"></script>
+    <script>
+
+        $(".product_num_input").on('change', function (event) {
+            var id = this.id;
+            {#product_id = id.substring(0, id.length-9);#}
+            var prdt_id = id.substring(0, id.length - 1);
+            var qty = parseInt($("#" + id + 'quantity').text());
+
+            var quantity = {}
+            quantity[prdt_id] = qty;
+            var product_id = [prdt_id,];
+            console.log(quantity);
+            console.log(product_id);
+            var data = {
+                product_ids: product_id,
+                quantity: quantity
+            };
+
+            updateItems(data)
+        });
+
+        $(".button_update").click(function () {
+            var quantity = {};
+            product_ids.forEach(function (id) {
+                txt = id.toString();
+                txt += '_quantity';
+                quantity[id] = $('#' + txt).text();
+                {#var product_id = $(this);#}
+                {#quantity[id] = product_id.find('.product_num_input').val()#}
+            });
+
+            data = {
+                product_ids: product_ids,
+                quantity: quantity
+            };
+
+            updateItems(data)
+
+        });
+
+        function updateItems(data) {
+            var token = '{{csrf_token}}';
+            $.ajax({
+                url: '{% url 'FullStackApp:product-update' %}', // the endpoint
+                headers: {"X-CSRFToken": token},
+                type: "POST", // http method
+                {#dataType: "json",#}
+                data: data,
+                success: function (json, textMsg, xhr) {
+                    console.log(json)
+                    console.log(textMsg)
+                    console.log(xhr)
+                    alert('Cart Updated successfully')
+                    location.reload();
+                    location.reload();
+                },
+                error: function (xhr, errmsg, err) {
+
+                    {#console.log(xhr)#}
+                    console.log(errmsg)
+                    console.log(err)
+                    var html_text = "<p>Error Message: <span class='text-danger'>"
+                    html_text += err
+                    html_text += "</span><p>"
+                    $('#update_message').html(html_text)
+
+                    alert("Opps! Something's wrong'!")
+                }
+            });
+        }
+
+
+    </script>
 {% endblock %}
 
 {% block content %}
 
-    	<div class="home">
-		<div class="parallax_background parallax-window" data-parallax="scroll" data-image-src="{% static 'FullStackApp/images/product_background.jpg' %}" data-speed="0.8"></div>
-		<div class="home_container">
-			<div class="home_content">
-				<div class="home_title">Cart</div>
-				<div class="breadcrumbs">
-					<ul class="d-flex flex-row align-items-center justify-content-start">
-						<li><a href="index.html">Home</a></li>
-						<li>Your Cart</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="home">
+        <div class="parallax_background parallax-window" data-parallax="scroll"
+             data-image-src="{% static 'FullStackApp/images/product_background.jpg' %}" data-speed="0.8"></div>
+        <div class="home_container">
+            <div class="home_content">
+                <div class="home_title">Cart</div>
+                <div class="breadcrumbs">
+                    <ul class="d-flex flex-row align-items-center justify-content-start">
+                        <li><a href="index.html">Home</a></li>
+                        <li>Your Cart</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<!-- Cart -->
+    <!-- Cart -->
 
     <div class="cart_section">
-    {% if carts %}
-		<div class="section_container">
-			<div class="container">
-				<div class="row">
-					<div class="col">
-						<div class="cart_container">
+        {% if carts %}
+            <div class="section_container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="cart_container">
 
-							<!-- Cart Bar -->
-							<div class="cart_bar">
-								<ul class="cart_bar_list item_list d-flex flex-row align-items-center justify-content-start">
-									<li>Product</li>
-									<li>Color</li>
-									<li>Size</li>
-									<li>Price</li>
-									<li>Quantity</li>
-									<li>Total</li>
-								</ul>
-							</div>
+                                <!-- Cart Bar -->
+                                <div class="cart_bar">
+                                    <ul class="cart_bar_list item_list d-flex flex-row align-items-center justify-content-start">
+                                        <li>Product</li>
+                                        <li>Color</li>
+                                        <li>Size</li>
+                                        <li>Price</li>
+                                        <li>Quantity</li>
+                                        <li>Total</li>
+                                        <li>Action</li>
+                                    </ul>
+                                </div>
 
-							<!-- Cart Items -->
-							<div class="cart_items">
-								<ul class="cart_items_list">
-                                    {% for cart in carts %}
-									<!-- Cart Item -->
-									<li class="cart_item item_list d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
-										<div class="product d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
-											<div><div class="product_image"><img src="{{cart.product.image.url }}" alt=""></div></div>
-											<div class="product_name"><a href="product.html">Brown Shoulder Bag</a></div>
-										</div>
-										<div class="product_color text-lg-center product_text"><span>Color: </span>Brown</div>
-										<div class="product_size text-lg-center product_text"><span>Size: </span>One Size</div>
-										<div class="product_price text-lg-center product_text"><span>Price: </span>${{ cart.product.price }}</div>
-										<div class="product_quantity_container">
-											<div class="product_quantity ml-lg-auto mr-lg-auto text-center">
-												<span class="product_text product_num">1</span>
-												<div class="qty_sub qty_button trans_200 text-center"><span>-</span></div>
-												<div class="qty_add qty_button trans_200 text-center"><span>+</span></div>
-											</div>
-										</div>
-										<div class="product_total text-lg-center product_text"><span>Total: </span>$19.50</div>
-									</li>
-                                    {% endfor %}
-								</ul>
-							</div>
+                                <script>
+                                    product_ids = []
+                                </script>
+                                <!-- Cart Items -->
+                                <div class="cart_items">
+                                    <ul class="cart_items_list">
+                                        {% for cart in carts %}
+                                            <!-- Cart Item -->
+                                            <li class="cart_item item_list d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
+                                                <div class="product d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
+                                                    <div>
+                                                        <div class="product_image"><img
+                                                                src="{{ cart.product.image.url }}" alt=""></div>
+                                                    </div>
+                                                    <div class="product_name"><a
+                                                            href="product.html">{{ cart.product.name }}</a></div>
 
-							<!-- Cart Buttons -->
-							<div class="cart_buttons d-flex flex-row align-items-start justify-content-start">
-								<div class="cart_buttons_inner ml-auto d-flex flex-row align-items-start justify-content-start flex-wrap">
-									<div class="button button_continue trans_200"><a href="categories.html">continue shopping</a></div>
-									<div class="button button_clear trans_200"><a href="categories.html">clear cart</a></div>
-									<div class="button button_update trans_200"><a href="categories.html">update cart</a></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                                                    <script>
+                                                        product_ids.push({{ cart.product.id }});
 
-		<div class="section_container cart_extra_container">
-			<div class="container">
-				<div class="row">
 
-					<!-- Shipping & Delivery -->
-					<div class="col-xxl-6">
-						<div class="cart_extra cart_extra_1">
-							<div class="cart_extra_content cart_extra_coupon">
-								<div class="cart_extra_title">Coupon code</div>
-								<div class="coupon_form_container">
-									<form action="#" id="coupon_form" class="coupon_form">
-										<input type="text" class="coupon_input" required="required">
-										<button class="coupon_button">apply code</button>
-									</form>
-								</div>
-								<div class="shipping">
-									<div class="cart_extra_title">Shipping Method</div>
-									<ul>
-										<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
-											<label class="radio_container">
-												<input type="radio" id="radio_1" name="shipping_radio" class="shipping_radio">
-												<span class="radio_mark"></span>
-												<span class="radio_text">Next day delivery</span>
-											</label>
-											<div class="shipping_price ml-auto">$4.99</div>
-										</li>
-										<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
-											<label class="radio_container">
-												<input type="radio" id="radio_2" name="shipping_radio" class="shipping_radio">
-												<span class="radio_mark"></span>
-												<span class="radio_text">Standard delivery</span>
-											</label>
-											<div class="shipping_price ml-auto">$1.99</div>
-										</li>
-										<li class="shipping_option d-flex flex-row align-items-center justify-content-start">
-											<label class="radio_container">
-												<input type="radio" id="radio_3" name="shipping_radio" class="shipping_radio" checked>
-												<span class="radio_mark"></span>
-												<span class="radio_text">Personal Pickup</span>
-											</label>
-											<div class="shipping_price ml-auto">Free</div>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
+                                                    </script>
+                                                </div>
+                                                <div class="product_color text-lg-center product_text">
+                                                    <span>Color: </span>Brown
+                                                </div>
+                                                <div class="product_size text-lg-center product_text">
+                                                    <span>Size: </span>One Size
+                                                </div>
+                                                <div class="product_price text-lg-center product_text">
+                                                    <span>Price: </span>${{ cart.product.price }}</div>
+                                                <div class="product_quantity_container">
+                                                    <div class="product_quantity ml-lg-auto mr-lg-auto text-center">
+                                                        <span id="{{ cart.product.id }}_quantity"
+                                                              class="quantity product_text product_num ">{{ cart.quantity }}</span>
+                                                        <input type="hidden" id="{{ cart.product.id }}_" type="number"
+                                                               class="product_num_input" value="{{ cart.quantity }}">
+                                                        <div class="qty_sub qty_button trans_200 text-center">
+                                                            <span>-</span></div>
+                                                        <div class="qty_add qty_button trans_200 text-center">
+                                                            <span>+</span></div>
+                                                    </div>
+                                                </div>
+                                                {#                                        <div class="product_total text-lg-center product_text"><span>Total: </span>$19.50</div>#}
+                                                <div class="product_total text-lg-center product_text">
+                                                    <span>Total: </span> ${{ cart.total_price }}</div>
+                                                <div class=" text-lg-center product_text"><span>Action: </span> <a
+                                                        href="{% url 'FullStackApp:product-remove' cart.product.id %}"
+                                                        class="btn btn-danger " role="button"
+                                                        aria-disabled="true"><span class="fa fa-trash"></span></a>
+                                                </div>
 
-					<!-- Cart Total -->
-					<div class="col-xxl-6">
-						<div class="cart_extra cart_extra_2">
-							<div class="cart_extra_content cart_extra_total">
-								<div class="cart_extra_title">Cart Total</div>
-								<ul class="cart_extra_total_list">
-									<li class="d-flex flex-row align-items-center justify-content-start">
-										<div class="cart_extra_total_title">Subtotal</div>
-										<div class="cart_extra_total_value ml-auto">$29.90</div>
-									</li>
-									<li class="d-flex flex-row align-items-center justify-content-start">
-										<div class="cart_extra_total_title">Shipping</div>
-										<div class="cart_extra_total_value ml-auto">Free</div>
-									</li>
-									<li class="d-flex flex-row align-items-center justify-content-start">
-										<div class="cart_extra_total_title">Total</div>
-										<div class="cart_extra_total_value ml-auto">$29.90</div>
-									</li>
-								</ul>
-								<div class="checkout_button trans_200"><a href="checkout.html">proceed to checkout</a></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+
+                                <div id="update_message" class="text-danger text-center"></div>
+                                <!-- Cart Buttons -->
+                                <div class="cart_buttons d-flex flex-row align-items-start justify-content-start">
+
+                                    <div class="cart_buttons_inner ml-auto d-flex flex-row align-items-start justify-content-start flex-wrap">
+                                        <div class="button button_continue trans_200"><a
+                                                href="{% url 'FullStackApp:home' %}">continue
+                                            shopping</a></div>
+                                        <div class="button button_clear trans_200"><a href="{% url 'FullStackApp:product-remove-all' %}">clear
+                                            cart</a></div>
+                                        <button class="btn btn-primary button button_update trans_200">update
+                                            cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section_container cart_extra_container">
+                <div class="container">
+                    <div class="row">
+
+                        <!-- Shipping & Delivery -->
+                        <div class="col-xxl-6">
+                            <div class="cart_extra cart_extra_1">
+                                <div class="cart_extra_content cart_extra_coupon">
+                                    <div class="cart_extra_title">Coupon code</div>
+                                    <div class="coupon_form_container">
+                                        <form action="#" id="coupon_form" class="coupon_form">
+                                            <input type="text" class="coupon_input" required="required">
+                                            <button class="coupon_button">apply code</button>
+                                        </form>
+                                    </div>
+                                    <div class="shipping">
+                                        <div class="cart_extra_title">Shipping Method</div>
+                                        <ul>
+                                            <li class="shipping_option d-flex flex-row align-items-center justify-content-start">
+                                                <label class="radio_container">
+                                                    <input type="radio" id="radio_1" name="shipping_radio"
+                                                           class="shipping_radio">
+                                                    <span class="radio_mark"></span>
+                                                    <span class="radio_text">Next day delivery</span>
+                                                </label>
+                                                <div class="shipping_price ml-auto">$4.99</div>
+                                            </li>
+                                            <li class="shipping_option d-flex flex-row align-items-center justify-content-start">
+                                                <label class="radio_container">
+                                                    <input type="radio" id="radio_2" name="shipping_radio"
+                                                           class="shipping_radio">
+                                                    <span class="radio_mark"></span>
+                                                    <span class="radio_text">Standard delivery</span>
+                                                </label>
+                                                <div class="shipping_price ml-auto">$1.99</div>
+                                            </li>
+                                            <li class="shipping_option d-flex flex-row align-items-center justify-content-start">
+                                                <label class="radio_container">
+                                                    <input type="radio" id="radio_3" name="shipping_radio"
+                                                           class="shipping_radio" checked>
+                                                    <span class="radio_mark"></span>
+                                                    <span class="radio_text">Personal Pickup</span>
+                                                </label>
+                                                <div class="shipping_price ml-auto">Free</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cart Total -->
+                        <div class="col-xxl-6">
+                            <div class="cart_extra cart_extra_2">
+                                <div class="cart_extra_content cart_extra_total">
+                                    <div class="cart_extra_title">Cart Total</div>
+                                    <ul class="cart_extra_total_list">
+                                        <li class="d-flex flex-row align-items-center justify-content-start">
+                                            <div class="cart_extra_total_title">Subtotal</div>
+                                            <div class="cart_extra_total_value ml-auto">${{ carts_processor.total_price }}</div>
+                                        </li>
+                                        <li class="d-flex flex-row align-items-center justify-content-start">
+                                            <div class="cart_extra_total_title">Shipping</div>
+                                            <div class="cart_extra_total_value ml-auto">Free</div>
+                                        </li>
+                                        <li class="d-flex flex-row align-items-center justify-content-start">
+                                            <div class="cart_extra_total_title">Total</div>
+                                            <div class="cart_extra_total_value ml-auto">$29.90</div>
+                                        </li>
+                                    </ul>
+                                    <div class="checkout_button trans_200"><a href="checkout.html">proceed to
+                                        checkout</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% else %}
-        <h3 class="text-center"> You currently do not have any Product in Cart </h3>
-    {% endif %}
-	</div>
+            <h3 class="text-center"> You currently do not have any Product in Cart </h3>
+        {% endif %}
+    </div>
 
 
 {% endblock %}

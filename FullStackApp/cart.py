@@ -32,12 +32,16 @@ class Cart:
             del self.cart[product_id]
             self.save()
 
+    def remove_all(self):
+        self.session[settings.CART_SESSION_ID] = {}
+
     def __iter__(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
+        print("initial cart", self.cart)
         for product in products:
             self.cart[str(product.id)]['product'] = product
-
+        print("later cart", self.cart)
         for item in self.cart.values():
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']

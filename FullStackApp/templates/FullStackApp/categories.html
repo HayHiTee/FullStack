@@ -24,9 +24,9 @@
                 <div class="home_title">Shop</div>
                 <div class="breadcrumbs">
                     <ul class="d-flex flex-row align-items-center justify-content-start">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="#">Woman</a></li>
-                        <li>Accessories</li>
+                        <li><a href="{% url 'FullStackApp:home' %}">Home</a></li>
+                        <li><a href="{% url 'FullStackApp:product-category' %}">Categories</a></li>
+                        <li>{{current_category }}</li>
                     </ul>
                 </div>
             </div>
@@ -107,15 +107,26 @@
                                 <div class="product grid-item {{ product.get_categories_string }}">
                                     <div class="product_inner">
                                         <div class="product_image">
-                                            <img src="{{ product.image.url }}" alt="">
+                                            <img src="{{ product.image.url }}" alt="" width="510px">
                                             <div class="product_tag">hot</div>
                                         </div>
                                         <div class="product_content text-center">
                                             <div class="product_title"><a href="{% url 'FullStackApp:product-detail' product.pk %}">{{ product.name }}</a>
                                             </div>
                                             <div class="product_price">${{ product.price }}</div>
-                                            <div class="product_button ml-auto mr-auto trans_200"><a href="#">add to
-                                                cart</a></div>
+{#                                            <div class="product_button ml-auto mr-auto trans_200"><a href="{% url 'FullStackApp:product-add' product.id %}">add to#}
+{#                                                cart</a></div>#}
+                                            <form action="{% url 'FullStackApp:product-add' product.pk %}"
+                                                  method="post">
+                                                {% csrf_token %}
+
+                                                {{ product_form.update }}
+                                                {{ product_form.quantity }}
+                                                <button type="submit"
+                                                        class="btn product_button ml-auto mr-auto trans_200">
+                                                    add to cart
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
