@@ -1,8 +1,13 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
 # Create your models here.
+class User(AbstractUser):
+    phone_number = models.CharField(max_length=50)
+    is_customer = models.BooleanField(default=False)
+
+
 class Department(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100, null=True, default='')
@@ -90,6 +95,7 @@ class ShippingRegion(models.Model):
 
 
 class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     credit_card = models.TextField(null=True)
     address_1 = models.CharField(max_length=100)
     address_2 = models.CharField(max_length=100)
