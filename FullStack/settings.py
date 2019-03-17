@@ -44,7 +44,7 @@ DB_DETAILS = {
 
 # For production in Heroku
 if ENV_TYPE == 'HEROKU':
-    DB_DETAILS = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    # DB_DETAILS = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
     DEBUG = False
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
@@ -111,7 +111,10 @@ WSGI_APPLICATION = 'FullStack.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': DB_DETAILS
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
 # Password validation
