@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+import dj_database_url
+import django_heroku
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -19,14 +22,35 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '_$@15_(hvy^p-(0w&2&n@#uwvqva=k)mwu%y_yo8s#u&tp7s0e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.environ.get('HOST_ONE'), 'localhost', '127.0.0.1', ]
+
+# Check for Environment Type
+ENV_TYPE = os.environ.get('ENV_TYPE')
+SECRET_KEY = os.environ.get('APP_SECRET_KEY')
+
+# For production in Heroku
+if ENV_TYPE == 'HEROKU':
+    DB_DETAILS = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    DEBUG = False
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 # AUTH_USER_MODEL = 'FullStackApp.Customer'
+
+# Log in details
+
+# LOGIN_URL = 'login'
+#
+# LOGOUT_URL = 'logout'
+#
+# LOGIN_REDIRECT_URL = ''
+#
+# LOGOUT_REDIRECT_URL = 'login'
 
 # Application definition
 
@@ -119,8 +143,37 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Where collectstatic will store all the collected static files
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Media')
 
 CART_SESSION_ID = 'cart'
+
+# Email Configuration
+
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
+#SENDGRID
+#
+# EMAIL_HOST = 'smtp.sendgrid.net'
+#
+# EMAIL_PORT = 587
+#
+# EMAIL_HOST_USER = 'apikey'
+#
+# EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
+#
+#
+# EMAIL_USE_TLS = True
+#
+#
+# DEFAULT_FROM_EMAIL = 'YourApp  <noreply@yourdomain.com>'
+#
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+# Should be at the bottoom
+django_heroku.settings(locals())
