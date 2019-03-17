@@ -23,6 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
+SECRET_KEY = os.environ.get('APP_SECRET_KEY')
+# print(SECRET_KEY)
+if SECRET_KEY is None:
+    SECRET_KEY = 'kjf'
+    print(SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -30,7 +35,7 @@ ALLOWED_HOSTS = [os.environ.get('HOST_ONE'), 'localhost', '127.0.0.1', ]
 
 # Check for Environment Type
 ENV_TYPE = os.environ.get('ENV_TYPE')
-SECRET_KEY = os.environ.get('APP_SECRET_KEY')
+
 
 # For production in Heroku
 if ENV_TYPE == 'HEROKU':
