@@ -1,3 +1,3 @@
 release: python manage.py migrate
 
-web: gunicorn FullStack.wsgi --log-file -
+web: gunicorn FullStack.wsgi --log-herfile -

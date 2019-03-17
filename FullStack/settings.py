@@ -36,6 +36,11 @@ ALLOWED_HOSTS = [os.environ.get('HOST_ONE'), 'localhost', '127.0.0.1', ]
 # Check for Environment Type
 ENV_TYPE = os.environ.get('ENV_TYPE')
 
+# DEFAULT DATABASE
+DB_DETAILS = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 
 # For production in Heroku
 if ENV_TYPE == 'HEROKU':
@@ -106,10 +111,7 @@ WSGI_APPLICATION = 'FullStack.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': DB_DETAILS
 }
 
 # Password validation
