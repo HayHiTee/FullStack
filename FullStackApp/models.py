@@ -5,7 +5,7 @@ from django.db import models
 # Create your models here.
 class User(AbstractUser):
     phone_number = models.CharField(max_length=50)
-    is_customer = models.BooleanField(default=True)
+    is_customer = models.BooleanField(default=False)
 
 
 class Department(models.Model):
