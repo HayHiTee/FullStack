@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 
 from FullStackApp.cart_views import cart_add, cart_remove, cart_update, cart_lists, cart_remove_all, cart_pre_checkout
