@@ -39,7 +39,7 @@ ENV_TYPE = os.environ.get('ENV_TYPE')
 
 # For production in Heroku
 if ENV_TYPE == 'HEROKU':
-    DB_DETAILS = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    # DB_DETAILS = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
     DEBUG = False
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
