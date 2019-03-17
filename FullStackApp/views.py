@@ -1,12 +1,15 @@
+from decimal import Decimal
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 # Create your views here.
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, FormView
 
-from FullStackApp.forms import CartAddProductForm
+from FullStackApp.cart import Cart
+from FullStackApp.forms import CartAddProductForm, CustomerOrderForm
 from FullStackApp.models import Product, ShoppingCart, Category, ProductCategory
 
 
@@ -19,10 +22,8 @@ class ListProduct(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context_data = super().get_context_data()
         product_form = CartAddProductForm()
-        context_data['product_form']= product_form
+        context_data['product_form'] = product_form
         return context_data
-
-
 
 
 class ListProductCategory(ListProduct):
@@ -76,14 +77,34 @@ class ListCart(ListView):
 
 
 # @method_decorator([login_required, ], name='dispatch')
-class Cart(View):
+class CartViewList(View):
     def get(self, request, *args, **kwargs):
-
         view = ListCart.as_view()
         return view(request, *args, **kwargs)
+
     pass
 
 
-class Checkout(TemplateView):
+class Checkout(FormView):
     template_name = 'FullStackApp/checkout.html'
+    form_class = CustomerOrderForm
+    cart_shipping_fee = 0
+    total_cart_plus_shipping = 0
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if 'cart_shipping_fee' in self.request.session:
+            self.cart_shipping_fee = Decimal(self.request.session['cart_shipping_fee'])
+        cart = Cart(self.request)
+        if cart.get_total_price():
+            self.total_cart_plus_shipping = cart.get_total_price() + self.cart_shipping_fee
+
+        context['total_cart_plus_shipping'] = self.total_cart_plus_shipping
+        context['cart_shipping_fee'] = self.cart_shipping_fee
+        return context
+
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        create_account = form.cleaned_data['create_account']
+        print(create_account)

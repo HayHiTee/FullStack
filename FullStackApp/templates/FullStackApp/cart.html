@@ -71,14 +71,47 @@
                     console.log(errmsg)
                     console.log(err)
                     var html_text = "<p>Error Message: <span class='text-danger'>"
-                    html_text += err
-                    html_text += "</span><p>"
-                    $('#update_message').html(html_text)
+                    html_text += err;
+                    html_text += "</span><p>";
+                    $('#update_message').html(html_text);
 
-                    alert("Opps! Something's wrong'!")
+                    alert("Opps! Something's wrong'!");
                 }
             });
         }
+    $('input[type=radio][name=shipping_radio]').on('change', function (event) {
+       console.log('radio changed');
+        add_cart_plus_shipping();
+    });
+    add_cart_plus_shipping();
+    function add_cart_plus_shipping(){
+          var cart_plus_shipping =  $('#cart_plus_shipping');
+          var cart_shipping_fee=  $('#cart_shipping_fee');
+          var form_cart_shipping_fee =  $('#form_cart_shipping_fee');
+          var ship_id = $('input[name=shipping_radio]:checked').val();
+          var ship_fee = 0;
+          cart_shipping_fee.text('Free');
+          form_cart_shipping_fee.val(0)
+          console.log(ship_id);
+
+          var cart_total = {{ carts_processor.total_price }};
+
+          if (ship_id === 'radio_1'){
+            ship_fee = 4.99;
+            cart_shipping_fee.text("$"+ship_fee.toString());
+            form_cart_shipping_fee.val(ship_fee)
+
+          }
+          else if (ship_id === 'radio_2'){
+            ship_fee = 1.99;
+            cart_shipping_fee.text("$"+ship_fee.toString());
+            form_cart_shipping_fee.val(ship_fee)
+          }
+
+          var cart_plus_ship = ship_fee + cart_total;
+          cart_plus_shipping.text("$"+cart_plus_ship.toString())
+    }
+
 
 
     </script>
@@ -140,7 +173,7 @@
                                                                 src="{{ cart.product.image.url }}" alt=""></div>
                                                     </div>
                                                     <div class="product_name"><a
-                                                            href="product.html">{{ cart.product.name }}</a></div>
+                                                            href="{% url 'FullStackApp:product-detail' cart.product.id%}">{{ cart.product.name }}</a></div>
 
                                                     <script>
                                                         product_ids.push({{ cart.product.id }});
@@ -149,10 +182,10 @@
                                                     </script>
                                                 </div>
                                                 <div class="product_color text-lg-center product_text">
-                                                    <span>Color: </span>Brown
+                                                    <span>Color: </span>{{cart.product.get_default_colour.value }}
                                                 </div>
                                                 <div class="product_size text-lg-center product_text">
-                                                    <span>Size: </span>One Size
+                                                    <span>Size: </span>{{cart.product.get_default_size.value }}
                                                 </div>
                                                 <div class="product_price text-lg-center product_text">
                                                     <span>Price: </span>${{ cart.product.price }}</div>
@@ -224,16 +257,16 @@
                                             <li class="shipping_option d-flex flex-row align-items-center justify-content-start">
                                                 <label class="radio_container">
                                                     <input type="radio" id="radio_1" name="shipping_radio"
-                                                           class="shipping_radio">
+                                                           class="shipping_radio" value="radio_1">
                                                     <span class="radio_mark"></span>
                                                     <span class="radio_text">Next day delivery</span>
                                                 </label>
-                                                <div class="shipping_price ml-auto">$4.99</div>
+                                                <div class="shipping_price ml-auto">$<span>4.99</span></div>
                                             </li>
                                             <li class="shipping_option d-flex flex-row align-items-center justify-content-start">
                                                 <label class="radio_container">
                                                     <input type="radio" id="radio_2" name="shipping_radio"
-                                                           class="shipping_radio">
+                                                           class="shipping_radio" value="radio_2">
                                                     <span class="radio_mark"></span>
                                                     <span class="radio_text">Standard delivery</span>
                                                 </label>
@@ -242,7 +275,7 @@
                                             <li class="shipping_option d-flex flex-row align-items-center justify-content-start">
                                                 <label class="radio_container">
                                                     <input type="radio" id="radio_3" name="shipping_radio"
-                                                           class="shipping_radio" checked>
+                                                           class="shipping_radio" value="radio_3" checked>
                                                     <span class="radio_mark"></span>
                                                     <span class="radio_text">Personal Pickup</span>
                                                 </label>
@@ -266,15 +299,19 @@
                                         </li>
                                         <li class="d-flex flex-row align-items-center justify-content-start">
                                             <div class="cart_extra_total_title">Shipping</div>
-                                            <div class="cart_extra_total_value ml-auto">Free</div>
+                                            <div id="cart_shipping_fee" class="cart_extra_total_value ml-auto">Free</div>
                                         </li>
                                         <li class="d-flex flex-row align-items-center justify-content-start">
                                             <div class="cart_extra_total_title">Total</div>
-                                            <div class="cart_extra_total_value ml-auto">$29.90</div>
+                                            <div id="cart_plus_shipping" class="cart_extra_total_value ml-auto">$29.90</div>
                                         </li>
                                     </ul>
-                                    <div class="checkout_button trans_200"><a href="checkout.html">proceed to
-                                        checkout</a></div>
+                                    <br>
+                                    <form class="form-group" method="post" action="{% url 'FullStackApp:pre-checkout' %}">
+                                        {% csrf_token   %}
+                                        <input type="hidden" name="cart_shipping_fee" id="form_cart_shipping_fee" value="0">
+                                    <button class="btn  checkout_button trans_200">PROCEED TO CHECKOUT</button>
+                                        </form>
                                 </div>
                             </div>
                         </div>

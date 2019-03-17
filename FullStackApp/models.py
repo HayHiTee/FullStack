@@ -36,6 +36,17 @@ class Product(models.Model):
         print(categories)
         return categories
 
+    def get_default_size(self):
+        sizes = AttributeValue.objects.filter(attribute_id=1)[0]
+        prod_attr = self.product_attribute_related_product.filter(attribute_value=sizes)[0]
+        return prod_attr.attribute_value
+
+    def get_default_colour(self):
+        colors = AttributeValue.objects.filter(attribute_id=2)[0]
+        prod_attr = self.product_attribute_related_product.filter(attribute_value=colors)[0]
+
+        return prod_attr.attribute_value
+
 
 class ProductCategory(models.Model):
     class Meta:
@@ -62,7 +73,6 @@ class ProductAttribute(models.Model):
     attribute_value = models.ForeignKey(AttributeValue, on_delete=models.CASCADE,
                                            related_name='product_attribute_related_attribute_value')
 
-
 class ShoppingCart(models.Model):
     cart_id = models.CharField(max_length=32)
     product = models.OneToOneField(Product, on_delete=models.CASCADE)
@@ -74,6 +84,9 @@ class ShoppingCart(models.Model):
 
 class ShippingRegion(models.Model):
     shipping_region = models.CharField(max_length=100)
+
+    def __str__(self):
+        return  self.shipping_region
 
 
 class Customer(models.Model):

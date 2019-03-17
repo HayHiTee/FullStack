@@ -43,6 +43,7 @@ def cart_add(request, product_id):
 #     response['msg'] = 'Cart Successfully updated'
 #     return JsonResponse(response)
 
+@require_POST
 def cart_update(request):
     data = request.POST
     print(data)
@@ -58,7 +59,7 @@ def cart_update(request):
     for product_id in product_ids:
         product = get_object_or_404(Product, id=product_id)
         quantity = int(data['quantity[{}]'.format(product_id)][0])
-        print("product_id:{} and quantity:{}".format(product_id,quantity))
+        print("product_id:{} and quantity:{}".format(product_id, quantity))
         cart.add(product=product, quantity=quantity, update_quantity=True)
 
     response['error'] = error
@@ -74,7 +75,8 @@ def cart_remove(request, product_id):
 
 def cart_remove_all(request):
     cart = Cart(request)
-    cart.remove_all()
+    # cart.remove_all()
+    cart.clear()
     return redirect('FullStackApp:carts')
 
 def cart_lists(request):
@@ -86,4 +88,13 @@ def cart_lists(request):
     print('final cart', cart)
 
     return render(request, 'FullStackApp/cart.html', {'carts': cart})
+
+@require_POST
+def cart_pre_checkout(request):
+    data = request.POST
+    print(data)
+    cart_shipping_fee = data['cart_shipping_fee']
+    print(cart_shipping_fee)
+    request.session['cart_shipping_fee'] = cart_shipping_fee
+    return redirect('FullStackApp:checkout')
 
