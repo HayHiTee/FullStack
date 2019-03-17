@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('APP_SECRET_KEY')
 # print(SECRET_KEY)
-if SECRET_KEY is None:
-    SECRET_KEY = 'kjf'
-    print(SECRET_KEY)
+# if SECRET_KEY is None:
+#     SECRET_KEY = 'kjf'
+#     print(SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -39,7 +39,7 @@ ENV_TYPE = os.environ.get('ENV_TYPE')
 
 # For production in Heroku
 if ENV_TYPE == 'HEROKU':
-    # DB_DETAILS = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    DB_DETAILS = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
     DEBUG = False
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
