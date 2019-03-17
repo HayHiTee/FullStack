@@ -10,14 +10,14 @@ class User(AbstractUser):
 
 class Department(models.Model):
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100, null=True, default='')
+    description = models.CharField(max_length=500, null=True, default='')
 
 
 class Category(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE,
                                    related_name='related_category_department')
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=200, null=True, default='')
+    description = models.CharField(max_length=500, null=True, default='')
 
     def __str__(self):
         return self.name
