@@ -121,6 +121,12 @@ class Checkout(FormView):
     @transaction.atomic
     def form_valid(self, form):
         cart = Cart(self.request)
+        if 'cart_shipping_fee' in self.request.session:
+            self.cart_shipping_fee = Decimal(self.request.session['cart_shipping_fee'])
+
+        if cart.get_total_price():
+            self.total_cart_plus_shipping = cart.get_total_price() + self.cart_shipping_fee
+
         if not cart:
             return redirect('FullStackApp:carts')
         print(form.cleaned_data)
