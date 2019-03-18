@@ -24,11 +24,11 @@
                 <div class="home_title">Shop</div>
                 <div class="breadcrumbs">
                     <ul class="d-flex flex-row align-items-center justify-content-start">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="{% url 'FullStackApp:home' %}">Home</a></li>
                         <li>
                             <a href="{% url 'FullStackApp:product-category' %}?categories={{ product.get_categories_string }}">{{ product.get_categories_string }}</a>
                         </li>
-                        <li><a href="categories.html">Accessories</a></li>
+{#                        <li><a href="{% url 'FullStackApp:home' %}">Accessories</a></li>#}
                         <li>{{ product.name }}</li>
                     </ul>
                 </div>
@@ -90,7 +90,7 @@
                                 </div>
                             </div>
                             <div class="product_sidebar order-lg-2 order-1">
-                                <form action="#" id="product_form" class="product_form">
+                                <form action="{% url 'FullStackApp:product-add' product.pk %}" method="post" id="product_form" class="product_form">
                                     <div class="product_name">{{ product.name }}</div>
                                     <div class="product_description">{{ product.description }}</div>
                                     <div class="product_price">${{ product.price }}</div>
@@ -145,8 +145,18 @@
                                     </div>
 
 
-                                    <button class="cart_button trans_200">add to cart</button>
-                                    <div class="similar_products_button trans_200"><a href="categories.html">see similar
+                                        {% csrf_token %}
+
+                                        {{ product_form.update }}
+                                        {{ product_form.quantity }}
+                                        <button type="submit"
+                                                class="btn cart_button trans  trans_200">
+                                            ADD TO CART
+                                        </button>
+
+                                    {#                                    <button class="cart_button trans_200">add to cart</button>#}
+                                    <div class="similar_products_button trans_200"><a
+                                            href="{% url 'FullStackApp:product-category' %}">see similar
                                         products</a></div>
                                 </form>
                                 <div class="product_links">

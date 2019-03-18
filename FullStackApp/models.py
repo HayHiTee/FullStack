@@ -1,3 +1,7 @@
+import random
+import string
+from datetime import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -7,10 +11,16 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=50)
     is_customer = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.username
+
 
 class Department(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500, null=True, default='')
+
+    def __str__(self):
+        return self.name
 
 
 class Category(models.Model):
@@ -32,6 +42,9 @@ class Product(models.Model):
     image_2 = models.ImageField()
     thumbnail = models.ImageField()
     display = models.SmallIntegerField(default=0)
+
+    def __str__(self):
+        return self.name
 
     def get_categories_string(self):
         categories = ''
@@ -56,27 +69,35 @@ class Product(models.Model):
 class ProductCategory(models.Model):
     class Meta:
         unique_together = (('product', 'category'),)
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='related_product')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='related_category')
 
 
 class Attribute(models.Model):
     name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
 
 
 class AttributeValue(models.Model):
     attribute = models.ForeignKey(Attribute, on_delete=models.CASCADE,
-                                     related_name='attribute_value_related_attribute')
+                                  related_name='attribute_value_related_attribute')
     value = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.value
     pass
 
 
 class ProductAttribute(models.Model):
     class Meta:
         unique_together = (('product', 'attribute_value'),)
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_attribute_related_product')
     attribute_value = models.ForeignKey(AttributeValue, on_delete=models.CASCADE,
-                                           related_name='product_attribute_related_attribute_value')
+                                        related_name='product_attribute_related_attribute_value')
+
 
 class ShoppingCart(models.Model):
     cart_id = models.CharField(max_length=32)
@@ -91,12 +112,13 @@ class ShippingRegion(models.Model):
     shipping_region = models.CharField(max_length=100)
 
     def __str__(self):
-        return  self.shipping_region
+        return self.shipping_region
 
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     credit_card = models.TextField(null=True)
+    company = models.CharField(null=True, max_length=100)
     address_1 = models.CharField(max_length=100)
     address_2 = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
@@ -104,20 +126,31 @@ class Customer(models.Model):
     postal_code = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     shipping_region = models.ForeignKey(ShippingRegion,
-                                           on_delete=models.CASCADE, related_name='customer_related_shipping_region')
-    day_phone = models.CharField(max_length=100)
-    eve_phone = models.CharField(max_length=100)
-    mob_phone = models.CharField(max_length=100)
+                                        on_delete=models.CASCADE, related_name='customer_related_shipping_region')
+    day_phone = models.CharField(max_length=100, null=True)
+    eve_phone = models.CharField(max_length=100, null=True)
+    mob_phone = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.user
     pass
 
 
 class Shipping(models.Model):
-    shipping_type = models.CharField(max_length=100)
+    NEXT_DAY = 'Nxt_day'
+    STANDARD = 'std'
+    FREE = 'Free'
+    SHIPPING_CHOICE = ((NEXT_DAY, 'Next Day'),
+                       (STANDARD, 'Standard'),
+                       (FREE, 'Free'))
+    shipping_type = models.CharField(max_length=100, choices=SHIPPING_CHOICE, default=FREE)
     shipping_cost = models.DecimalField(max_digits=10, decimal_places=2)
     shipping_region = models.ForeignKey(ShippingRegion,
-                                           on_delete=models.CASCADE, related_name='shipping_related_region')
+                                        on_delete=models.CASCADE, related_name='shipping_related_region')
 
-
+    def __str__(self):
+        return '{} {} {}'.format(self.shipping_type, self.shipping_cost,
+                                 self.shipping_region)
 class Tax(models.Model):
     tax_type = models.CharField(max_length=100)
     tax_percentage = models.DecimalField(max_digits=10, decimal_places=2)
@@ -127,16 +160,27 @@ class Tax(models.Model):
 
 
 class Orders(models.Model):
+    tracking_id = models.CharField(max_length=50, unique=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE,
+                                 related_name='orders_related_customer', blank=True, null=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    created_on = models.DateTimeField()
+    created_on = models.DateTimeField(auto_now_add=True)
     shipped_on = models.DateTimeField(null=True)
     status = models.IntegerField(default=0)
     comments = models.CharField(max_length=255, null=True)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='orders_related_customer')
+
     auth_code = models.CharField(max_length=50, null=True)
     reference = models.CharField(max_length=50, null=True)
     shipping = models.ForeignKey(Shipping, on_delete=models.CASCADE, related_name='orders_related_shipping')
     tax = models.ForeignKey(Tax, on_delete=models.CASCADE, related_name='orders_related_tax')
+
+
+
+    def __str__(self):
+        return self.tracking_id
+
+
+
 
 
 class OrderDetail(models.Model):
@@ -148,6 +192,10 @@ class OrderDetail(models.Model):
     unit_cost = models.DecimalField(max_digits=10, decimal_places=2)
     pass
 
+    def __str__(self):
+        return '{} {} {} {} {}'.format(self.order, self.product,
+                                    self.attributes, self.quantity,
+                        self.unit_cost)
 
 class Audit(models.Model):
     order = models.ForeignKey(Orders, on_delete=models.CASCADE, related_name='audit_related_order')

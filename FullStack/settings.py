@@ -45,7 +45,7 @@ DB_DETAILS = {
 # For production in Heroku
 if ENV_TYPE == 'HEROKU':
     # DB_DETAILS = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
-    DEBUG = False
+    # DEBUG = False
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -167,22 +167,22 @@ CART_SESSION_ID = 'cart'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 #SENDGRID
-#
-# EMAIL_HOST = 'smtp.sendgrid.net'
-#
-# EMAIL_PORT = 587
-#
-# EMAIL_HOST_USER = 'apikey'
-#
-# EMAIL_HOST_PASSWORD = os.environ.get('SENDGRID_API_KEY')
-#
-#
-# EMAIL_USE_TLS = True
-#
-#
-# DEFAULT_FROM_EMAIL = 'YourApp  <noreply@yourdomain.com>'
-#
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = 'apikey'
+
+EMAIL_HOST_PASSWORD = os.environ.get('SEND_GRID_API_KEY')
+
+
+EMAIL_USE_TLS = True
+
+
+DEFAULT_FROM_EMAIL = 'Turing Shopping  <codersserver@gmail.com>'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 # Should be at the bottoom

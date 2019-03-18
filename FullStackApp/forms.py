@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from FullStackApp.models import ShippingRegion
+from FullStackApp.models import ShippingRegion, User
 
 
 class CartProduct(forms.Form):
@@ -48,3 +48,13 @@ class CustomerOrderForm(forms.Form):
         if not accept_terms:
             raise ValidationError('You must Accept our terms and Conditions')
         return accept_terms
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        user = User.objects.filter(email=email, username=email)
+        print(user)
+        if user.exists():
+            raise ValidationError('Email already exist')
+        return email
+
+
