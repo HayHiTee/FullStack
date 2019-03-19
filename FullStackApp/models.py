@@ -132,7 +132,7 @@ class Customer(models.Model):
     mob_phone = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return self.user
+        return self.user.username
     pass
 
 

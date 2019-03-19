@@ -49,6 +49,12 @@ class CustomerOrderForm(forms.Form):
             raise ValidationError('You must Accept our terms and Conditions')
         return accept_terms
 
+    def clean_create_account(self):
+        create_account = self.cleaned_data['create_account']
+        if not create_account:
+            raise ValidationError('You must Click Create Account for your order to be successful')
+        return create_account
+
     def clean_email(self):
         email = self.cleaned_data['email']
         user = User.objects.filter(email=email, username=email)
