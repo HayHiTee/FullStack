@@ -4,4 +4,5 @@
  {"id":4, "shipping_type":"By air (7 days, $25)", "shipping_cost":25.0, "shipping_region_id":3},
  {"id":5, "shipping_type":"By sea (28 days, $10)", "shipping_cost":10.0, "shipping_region_id":3},
  {"id":6, "shipping_type":"By air (10 days, $35)", "shipping_cost":35.0, "shipping_region_id":4},
- {"id":7, "shipping_type":"By sea (28 days, $30)", "shipping_cost":30.0, "shipping_region_id":4}]
+ {"id":7, "shipping_type":"By sea (28 days, $30)", "shipping_cost":30.0, "shipping_region_id":4},
+{"id":8, "shipping_type":"Free Delivery (40 days, $0)", "shipping_cost":0.0, "shipping_region_id":4}]

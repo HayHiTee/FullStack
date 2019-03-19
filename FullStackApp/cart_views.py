@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 
 from FullStackApp.forms import CartAddProductForm, CartUpdateProductForm
-from FullStackApp.models import Product
+from FullStackApp.models import Product, Shipping
 from .cart import Cart
 
 
@@ -86,15 +86,15 @@ def cart_lists(request):
         print(item)
         item['update_quantity_form'] = CartUpdateProductForm(initial={'quantity': item['quantity'], 'update': True})
     print('final cart', cart)
-
-    return render(request, 'FullStackApp/cart.html', {'carts': cart})
+    shipping = Shipping.objects.all()
+    return render(request, 'FullStackApp/cart.html', {'carts': cart, 'shipping': shipping})
 
 @require_POST
 def cart_pre_checkout(request):
     data = request.POST
     print(data)
-    cart_shipping_fee = data['cart_shipping_fee']
-    print(cart_shipping_fee)
-    request.session['cart_shipping_fee'] = cart_shipping_fee
+    cart_shipping_id = data['cart_shipping_id']
+    print(cart_shipping_id)
+    request.session['cart_shipping_id'] = cart_shipping_id
     return redirect('FullStackApp:checkout')
 

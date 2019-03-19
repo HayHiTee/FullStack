@@ -87,28 +87,21 @@
     function add_cart_plus_shipping(){
           var cart_plus_shipping =  $('#cart_plus_shipping');
           var cart_shipping_fee=  $('#cart_shipping_fee');
-          var form_cart_shipping_fee =  $('#form_cart_shipping_fee');
+          var form_cart_shipping_id =  $('#form_cart_shipping_id');
           var ship_id = $('input[name=shipping_radio]:checked').val();
           var ship_fee = 0;
           cart_shipping_fee.text('Free');
-          form_cart_shipping_fee.val(0)
+          form_cart_shipping_id.val(ship_id);
           console.log(ship_id);
 
-          var cart_total = {{ carts_processor.total_price }};
-
-          if (ship_id === 'radio_1'){
-            ship_fee = 4.99;
-            cart_shipping_fee.text("$"+ship_fee.toString());
-            form_cart_shipping_fee.val(ship_fee)
-
-          }
-          else if (ship_id === 'radio_2'){
-            ship_fee = 1.99;
-            cart_shipping_fee.text("$"+ship_fee.toString());
-            form_cart_shipping_fee.val(ship_fee)
-          }
-
+          var cart_total = Number({{ carts_processor.total_price }});
+          ship_fee = Number($('#price_'+ship_id).text());
+          cart_shipping_fee.text("$"+ship_fee.toFixed(2));
+          console.log(ship_fee);
+          console.log(cart_total);
           var cart_plus_ship = ship_fee + cart_total;
+          console.log(cart_plus_ship);
+          cart_plus_ship = cart_plus_ship.toFixed(2);
           cart_plus_shipping.text("$"+cart_plus_ship.toString())
     }
 
@@ -254,33 +247,21 @@
                                     <div class="shipping">
                                         <div class="cart_extra_title">Shipping Method</div>
                                         <ul>
+                                            {% for ship in shipping %}
                                             <li class="shipping_option d-flex flex-row align-items-center justify-content-start">
                                                 <label class="radio_container">
-                                                    <input type="radio" id="radio_1" name="shipping_radio"
-                                                           class="shipping_radio" value="radio_1">
+                                                    <input type="radio" id="radio_{{ship.id}}" name="shipping_radio"
+                                                           class="shipping_radio" value="{{ship.id}}">
                                                     <span class="radio_mark"></span>
-                                                    <span class="radio_text">Next day delivery</span>
+                                                    <span class="radio_text">{{ship.shipping_type}}</span>
                                                 </label>
-                                                <div class="shipping_price ml-auto">$<span>4.99</span></div>
+                                                <div  class="shipping_price ml-auto">$<span id="price_{{ship.id}}">{{ship.shipping_cost}}</span></div>
                                             </li>
-                                            <li class="shipping_option d-flex flex-row align-items-center justify-content-start">
-                                                <label class="radio_container">
-                                                    <input type="radio" id="radio_2" name="shipping_radio"
-                                                           class="shipping_radio" value="radio_2">
-                                                    <span class="radio_mark"></span>
-                                                    <span class="radio_text">Standard delivery</span>
-                                                </label>
-                                                <div class="shipping_price ml-auto">$1.99</div>
-                                            </li>
-                                            <li class="shipping_option d-flex flex-row align-items-center justify-content-start">
-                                                <label class="radio_container">
-                                                    <input type="radio" id="radio_3" name="shipping_radio"
-                                                           class="shipping_radio" value="radio_3" checked>
-                                                    <span class="radio_mark"></span>
-                                                    <span class="radio_text">Personal Pickup</span>
-                                                </label>
-                                                <div class="shipping_price ml-auto">Free</div>
-                                            </li>
+                                            {% endfor %}
+
+
+
+
                                         </ul>
                                     </div>
                                 </div>
@@ -309,7 +290,7 @@
                                     <br>
                                     <form class="form-group" method="post" action="{% url 'FullStackApp:pre-checkout' %}">
                                         {% csrf_token   %}
-                                        <input type="hidden" name="cart_shipping_fee" id="form_cart_shipping_fee" value="0">
+                                        <input type="hidden"  name="cart_shipping_id" id="form_cart_shipping_id" value="0">
                                     <button class="btn  checkout_button trans_200">PROCEED TO CHECKOUT</button>
                                         </form>
                                 </div>

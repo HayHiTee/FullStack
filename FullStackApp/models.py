@@ -137,13 +137,8 @@ class Customer(models.Model):
 
 
 class Shipping(models.Model):
-    NEXT_DAY = 'Nxt_day'
-    STANDARD = 'std'
-    FREE = 'Free'
-    SHIPPING_CHOICE = ((NEXT_DAY, 'Next Day'),
-                       (STANDARD, 'Standard'),
-                       (FREE, 'Free'))
-    shipping_type = models.CharField(max_length=100, choices=SHIPPING_CHOICE, default=FREE)
+
+    shipping_type = models.CharField(max_length=100)
     shipping_cost = models.DecimalField(max_digits=10, decimal_places=2)
     shipping_region = models.ForeignKey(ShippingRegion,
                                         on_delete=models.CASCADE, related_name='shipping_related_region')
@@ -184,8 +179,8 @@ class Orders(models.Model):
 
 
 class OrderDetail(models.Model):
-    order = models.ForeignKey(Orders, on_delete='order_detail_related_order')
-    product = models.ForeignKey(Product, on_delete='order_detail_related_product')
+    order = models.ForeignKey(Orders, on_delete=models.CASCADE,  related_name='order_detail_related_order')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_detail_related_product')
     attributes = models.CharField(max_length=1000)
     product_name = models.CharField(max_length=100)
     quantity = models.IntegerField()

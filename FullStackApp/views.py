@@ -14,7 +14,8 @@ from django.views.generic import TemplateView, ListView, DetailView, FormView
 from FullStackApp.cart import Cart
 from FullStackApp.cart_order import CartOrder
 from FullStackApp.forms import CartAddProductForm, CustomerOrderForm
-from FullStackApp.models import Product, ShoppingCart, Category, ProductCategory, User, Customer, Orders, OrderDetail
+from FullStackApp.models import Product, ShoppingCart, Category, ProductCategory, User, Customer, Orders, OrderDetail, \
+    Shipping
 
 
 class ListProduct(ListView):
@@ -108,12 +109,18 @@ class Checkout(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if 'cart_shipping_fee' in self.request.session:
-            self.cart_shipping_fee = Decimal(self.request.session['cart_shipping_fee'])
+        shipping = None
+        if 'cart_shipping_id' in self.request.session:
+            shipping_id = self.request.session['cart_shipping_id']
+            shipping = Shipping.objects.get(id=shipping_id)
+            self.cart_shipping_fee = Decimal(shipping.shipping_cost)
+
         cart = Cart(self.request)
         if cart.get_total_price():
             self.total_cart_plus_shipping = cart.get_total_price() + self.cart_shipping_fee
 
+        if not cart or not shipping:
+            return redirect('FullStackApp:carts')
         context['total_cart_plus_shipping'] = self.total_cart_plus_shipping
         context['cart_shipping_fee'] = self.cart_shipping_fee
         return context
@@ -121,13 +128,16 @@ class Checkout(FormView):
     @transaction.atomic
     def form_valid(self, form):
         cart = Cart(self.request)
-        if 'cart_shipping_fee' in self.request.session:
-            self.cart_shipping_fee = Decimal(self.request.session['cart_shipping_fee'])
+        shipping = None
+        if 'cart_shipping_id' in self.request.session:
+            shipping_id = self.request.session['cart_shipping_id']
+            shipping = Shipping.objects.get(id=shipping_id)
+            self.cart_shipping_fee = Decimal(shipping.shipping_cost)
 
         if cart.get_total_price():
             self.total_cart_plus_shipping = cart.get_total_price() + self.cart_shipping_fee
 
-        if not cart:
+        if not cart or not shipping:
             return redirect('FullStackApp:carts')
         print(form.cleaned_data)
         create_account = form.cleaned_data['create_account']
@@ -141,22 +151,8 @@ class Checkout(FormView):
         city = form.cleaned_data['city']
         phone_number = form.cleaned_data['phone_number']
         username = email = form.cleaned_data['email']
-
-        NEXT_DAY = 'Nxt_day'
-        STANDARD = 'std'
-        FREE = 'Free'
-        shipping_type = FREE
-        if not self.cart_shipping_fee:
-            self.cart_shipping_fee =0
-        if 0 < self.cart_shipping_fee < 2:
-            shipping_type = STANDARD
-        elif self.cart_shipping_fee >= 2:
-            shipping_type = NEXT_DAY
         order_cart = CartOrder()
-        order = order_cart.create_order(total_amount=self.total_cart_plus_shipping,
-                                    shipping_type=shipping_type,
-                                    shipping_fee=self.cart_shipping_fee,
-                                    shipping_region=shipping_region)
+        order = order_cart.create_order(total_amount=self.total_cart_plus_shipping, shipping=shipping)
 
         print('order', order)
         cart_list = []

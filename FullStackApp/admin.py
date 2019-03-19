@@ -18,13 +18,13 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Customer._meta.get_fields()]
-    # list_display = ('user', 'credit_card', 'company',
-    #                 'address_1', 'address_2',
-    #                 'city', 'region', 'postal_code',
-    #                 'country', 'shipping_region',
-    #                 'day_phone', 'eve_phone',
-    #                 'mob_phone',)
+
+    list_display = ('user', 'credit_card', 'company',
+                    'address_1', 'address_2',
+                    'city', 'region', 'postal_code',
+                    'country', 'shipping_region',
+                    'day_phone', 'eve_phone',
+                    'mob_phone',)
 
 
 @admin.register(Product)
@@ -56,18 +56,18 @@ class OrderDetailAdmin(admin.ModelAdmin):
 
 @admin.register(ShippingRegion)
 class ShippingRegionAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in ShippingRegion._meta.get_fields()]
-
+    # list_display = [field.name for field in ShippingRegion._meta.get_fields()]
+    pass
 
 @admin.register(Shipping)
 class ShippingAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Shipping._meta.get_fields()]
-
+    # list_display = [field.name for field in Shipping._meta.get_fields()]
+    pass
 
 @admin.register(Tax)
 class TaxAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Tax._meta.get_fields()]
-
+    # list_display = [field.name for field in Tax._meta.get_fields()]
+    pass
 
 @admin.register(Attribute)
 class AttributeAdmin(admin.ModelAdmin):
