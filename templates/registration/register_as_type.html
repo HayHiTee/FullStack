@@ -1,0 +1,28 @@
+{% extends 'registration/base.html' %}
+{% block title %}Select Registration Page {% endblock title %}
+{% block custom_style %}
+    a{
+    width:150px;
+
+    }
+ {% endblock custom_style %}
+{% block content %}
+    <h2>Register As </h2>
+    <div class="row">
+    <div class="col-md-6">
+    <a href="{% url 'register_car_owner' %}" class="btn btn-success btn-large " aria-pressed="true" type="">
+            <i class="fa fa-user-plus"></i>  Car Owner </a>
+    </div>
+
+
+    <div class="col-md-6">
+    <a href="{% url 'register_driver' %}" class="txt btn btn-success btn-large" aria-pressed="true" type="">
+            <i class="fa fa-user-plus"></i>  Driver </a>
+    </div>
+
+    </div>
+
+    <br>
+    <p>Already Registered.<a href="{% url 'login' %}">Login</a></p>
+
+{% endblock content %}

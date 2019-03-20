@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView, ListView, DetailView, FormView
 
 from FullStackApp.cart import Cart
@@ -100,6 +101,8 @@ class CartOrderSuccess(TemplateView):
     template_name = 'FullStackApp/cart_success.html'
 
 
+
+
 class Checkout(FormView):
     template_name = 'FullStackApp/checkout.html'
     form_class = CustomerOrderForm
@@ -109,7 +112,7 @@ class Checkout(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        shipping = None
+        # shipping = None
         if 'cart_shipping_id' in self.request.session:
             shipping_id = self.request.session['cart_shipping_id']
             shipping = Shipping.objects.get(id=shipping_id)
@@ -159,7 +162,7 @@ class Checkout(FormView):
             product = item['product']
             size = product.get_default_size()
             color = product.get_default_colour()
-            attributes = 'size: {}\n'.format(self)
+            attributes = 'size: {}\n'.format(size)
             attributes += 'color: {}'.format(color)
             cart_list.append({
                 'order':order,
@@ -202,3 +205,53 @@ class Checkout(FormView):
         return response
 
 
+@login_required()
+@require_POST
+@transaction.atomic
+def check_out_auth_customer(request):
+    template_name = 'FullStackApp/checkout.html'
+    cart_shipping_fee = 0
+    total_cart_plus_shipping = 0
+    success_url = reverse_lazy('FullStackApp:cart_order_success')
+    context = {}
+    shipping = None
+    if 'cart_shipping_id' in request.session:
+        shipping_id = request.session['cart_shipping_id']
+        shipping = Shipping.objects.get(id=shipping_id)
+        cart_shipping_fee = Decimal(shipping.shipping_cost)
+
+    cart = Cart(request)
+    if cart.get_total_price():
+        total_cart_plus_shipping = cart.get_total_price() + cart_shipping_fee
+    if not cart or not shipping:
+        return redirect('FullStackApp:carts')
+    context['total_cart_plus_shipping'] = total_cart_plus_shipping
+    context['cart_shipping_fee'] = cart_shipping_fee
+
+    customer = Customer.objects.get(user=request.user)
+    order_cart = CartOrder()
+    order = order_cart.create_order(total_amount=total_cart_plus_shipping, shipping=shipping)
+    order.customer = customer
+    order.save()
+    print('order', order)
+    cart_list = []
+    for item in cart:
+        product = item['product']
+        size = product.get_default_size()
+        color = product.get_default_colour()
+        attributes = 'size: {}\n'.format(size)
+        attributes += 'color: {}'.format(color)
+        cart_list.append({
+            'order': order,
+            'product': product,
+            'attributes': attributes,
+            'product_name': product.name,
+            'unit_cost': item['price'],
+            'quantity': item['quantity'],
+        })
+    print('car_list', cart_list)
+    order_detail = OrderDetail.objects.bulk_create(
+        [OrderDetail(**q) for q in cart_list]
+    )
+
+    return redirect('FullStackApp:cart_order_success')

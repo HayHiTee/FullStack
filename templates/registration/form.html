@@ -1,0 +1,43 @@
+{#{% load crispy_forms_tags %}#}
+{% csrf_token %}
+{#            {{ form|crispy }}#}
+{#            {{ form|crispy }}#}
+<div class="text-danger">{{ form.non_field_errors }}</div>
+
+{#{{ form.as_p }}#}
+{% if form.username %}
+<div class="form-label-group">
+    <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+    <label for="inputUsername">Username</label>
+</div>
+
+{% endif %}
+
+{% if form.password %}
+<div class="form-label-group">
+    <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <label for="inputPassword">Password</label>
+</div>
+
+{% endif %}
+
+{% if form.password_2 %}
+<div class="form-label-group">
+    <input name="password_2" type="password" id="inputPassword_2" class="form-control" placeholder="Password" required>
+    <label for="inputPassword_2">Confirm Password</label>
+</div>
+
+{% endif %}
+
+{% if form.email %}
+<div class="form-label-group">
+    <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+    <label for="inputEmail">Email address</label>
+</div>
+
+{% endif %}
+
+
+
+
+{#    Preview Picture before Uploading#}

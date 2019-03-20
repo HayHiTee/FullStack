@@ -3,7 +3,8 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from FullStackApp.cart_views import cart_add, cart_remove, cart_update, cart_lists, cart_remove_all, cart_pre_checkout
-from FullStackApp.views import Home, ProductDetail, CartViewList, Checkout, ListProductCategory, CartOrderSuccess
+from FullStackApp.views import Home, ProductDetail, CartViewList, Checkout, ListProductCategory, CartOrderSuccess, \
+    check_out_auth_customer
 
 app_name = 'FullStackApp'
 
@@ -19,6 +20,7 @@ urlpatterns = [
     path('product/<int:product_id>/carts/remove/', cart_remove, name='product-remove'),
     path('product/carts/clear/', cart_remove_all, name='product-remove-all'),
     path('product/carts/update/', cart_update, name='product-update'),
+    path('product/checkout/auth/customer/', check_out_auth_customer, name='product-checkout-auth-customer'),
 
 
 ]
