@@ -119,8 +119,7 @@ class Checkout(FormView):
         if cart.get_total_price():
             self.total_cart_plus_shipping = cart.get_total_price() + self.cart_shipping_fee
 
-        if not cart or not shipping:
-            return redirect('FullStackApp:carts')
+        
         context['total_cart_plus_shipping'] = self.total_cart_plus_shipping
         context['cart_shipping_fee'] = self.cart_shipping_fee
         return context
