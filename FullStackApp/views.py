@@ -14,9 +14,46 @@ from django.views.generic import TemplateView, ListView, DetailView, FormView
 
 from FullStackApp.cart import Cart
 from FullStackApp.cart_order import CartOrder
+from FullStackApp.decorators import customer_required
+from FullStackApp.email import send_email_account_created, send_order_email
 from FullStackApp.forms import CartAddProductForm, CustomerOrderForm
 from FullStackApp.models import Product, ShoppingCart, Category, ProductCategory, User, Customer, Orders, OrderDetail, \
     Shipping
+
+
+@method_decorator([login_required, customer_required], name='dispatch')
+class ListOrders(ListView):
+    template_name = 'FullStackApp/orders.html'
+    model = Orders
+    context_object_name = 'orders'
+    paginate_by = 10
+    pass
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        customer = Customer.objects.get(user = self.request.user)
+        qs = qs.filter(customer=customer)
+        return qs
+
+
+@method_decorator([login_required, customer_required], name='dispatch')
+class OrderDetailView(DetailView):
+    template_name = 'FullStackApp/order_details.html'
+    model = Orders
+    context_object_name = 'order_detail'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        customer = Customer.objects.get(user=self.request.user)
+        qs = qs.filter(customer=customer)
+        return qs
+    pass
+
+
+# class ListOrderDetails(ListView):
+#     template_name = 'FullStackApp/order_details.html'
+#     model = OrderDetail
+#     context_object_name = 'order_details'
 
 
 class ListProduct(ListView):
@@ -179,6 +216,7 @@ class Checkout(FormView):
 
         print('order detail', order_detail)
         # //send email to customer on order
+        send_order_email(email, order.tracking_id, self.request)
         print(create_account)
         if create_account:
             password = User.objects.make_random_password()
@@ -198,6 +236,7 @@ class Checkout(FormView):
                                 day_phone=phone_number)
             order.customer = customer
             print('customer', customer)
+            send_email_account_created(email, email, password, self.request)
             order.save()
         cart.clear()
         response = super().form_valid(form)

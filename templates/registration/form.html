@@ -6,34 +6,78 @@
 
 {#{{ form.as_p }}#}
 {% if form.username %}
-<div class="form-label-group">
-    <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
-    <label for="inputUsername">Username</label>
-</div>
+    <div class="form-label-group">
+        {{ form.username.errors }}
+        <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required
+               autofocus>
+        <label for="inputUsername">Username/Email</label>
+    </div>
 
 {% endif %}
 
 {% if form.password %}
-<div class="form-label-group">
-    <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-    <label for="inputPassword">Password</label>
-</div>
+    <div class="form-label-group">
+        {{ form.password.errors }}
+        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <label for="inputPassword">Password</label>
+    </div>
 
 {% endif %}
 
 {% if form.password_2 %}
-<div class="form-label-group">
-    <input name="password_2" type="password" id="inputPassword_2" class="form-control" placeholder="Password" required>
-    <label for="inputPassword_2">Confirm Password</label>
-</div>
+    {{ form.password_2.errors }}
+    <div class="form-label-group">
+        <input name="password_2" type="password" id="inputPassword_2" class="form-control" placeholder="Password"
+               required>
+        <label for="inputPassword_2">Confirm Password</label>
+    </div>
+{% endif %}
+
+{% if form.old_password %}
+    {{ form.old_password.errors }}
+    <div class="form-label-group">
+        <input name="old_password" type="password" id="inputold_password" class="form-control" placeholder="Password"
+               required>
+        <label for="inputold_password">Old Password</label>
+    </div>
+{% endif %}
+
+{% if form.new_password1 %}
+    {{ form.new_password1.errors }}
+    <div class="form-label-group">
+        <input name="new_password1" type="password" id="inputnew_password1" class="form-control" placeholder="Password"
+               required>
+        <label for="inputnew_password1">New Password</label>
+
+    </div>
+{% endif %}
+
+
+{% if form.new_password2 %}
+    {{ form.new_password2.errors }}
+    <div class="form-label-group">
+        <input name="new_password2" type="password" id="inputnew_password2" class="form-control" placeholder="Password"
+               required>
+        <label for="inputnew_password2">Confirm New Password</label>
+    <div class="help">
+            <ul>
+                <li>Your password can&#39;t be too similar to your other personal information.</li>
+                <li>Your password must contain at least 8 characters.</li>
+                <li>Your password can&#39;t be a commonly used password.</li>
+                <li>Your password can&#39;t be entirely numeric.</li>
+            </ul>
+        </div>
+    </div>
 
 {% endif %}
 
 {% if form.email %}
-<div class="form-label-group">
-    <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-    <label for="inputEmail">Email address</label>
-</div>
+    {{ form.email.errors }}
+    <div class="form-label-group">
+        <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required
+               autofocus>
+        <label for="inputEmail">Email address</label>
+    </div>
 
 {% endif %}
 

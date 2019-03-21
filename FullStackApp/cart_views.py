@@ -1,6 +1,7 @@
 from django.core.serializers import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.defaultfilters import register
 from django.views.decorators.http import require_POST
 
 from FullStackApp.forms import CartAddProductForm, CartUpdateProductForm

@@ -54,13 +54,13 @@ AUTH_USER_MODEL = 'FullStackApp.User'
 
 # Log in details
 
-# LOGIN_URL = 'login'
-#
-# LOGOUT_URL = 'logout'
-#
-# LOGIN_REDIRECT_URL = ''
-#
-# LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = 'login'
+
+LOGOUT_URL = 'logout'
+
+LOGIN_REDIRECT_URL = 'FullStackApp:home'
+
+LOGOUT_REDIRECT_URL = 'login'
 
 # Application definition
 
@@ -175,11 +175,12 @@ EMAIL_HOST_USER = 'apikey'
 
 EMAIL_HOST_PASSWORD = os.environ.get('SEND_GRID_API_KEY')
 
+print(os.environ.get('SEND_GRID_API_KEY'))
 
 EMAIL_USE_TLS = True
 
 
-DEFAULT_FROM_EMAIL = 'Turing Shopping  <codersserver@gmail.com>'
+DEFAULT_FROM_EMAIL = 'Turing Shopping  <noreply@gmail.com>'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

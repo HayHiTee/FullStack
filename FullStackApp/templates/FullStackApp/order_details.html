@@ -1,0 +1,109 @@
+{% extends 'FullStackApp/base.html' %}
+{% load static %}
+{% block linked_style %}
+    {% load  cart_tags%}
+{#    {% load m %}#}
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/styles/cart.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/styles/cart_responsive.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="home">
+        <div class="parallax_background parallax-window" data-parallax="scroll"
+             data-image-src="{% static 'FullStackApp/images/product_background.jpg' %}" data-speed="0.8"></div>
+        <div class="home_container">
+            <div class="home_content">
+                <div class="home_title">Cart</div>
+                <div class="breadcrumbs">
+                    <ul class="d-flex flex-row align-items-center justify-content-start">
+                        <li><a href="{% url 'FullStackApp:home' %}">Home</a></li>
+                        <li><a href="{% url 'FullStackApp:list-orders' %}">Your Orders</a></li>
+                        <li>Your Cart</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart -->
+
+    <div class="cart_section">
+        {% if order_detail %}
+            <div class="section_container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="cart_container">
+
+                                <h4>ORDER : <span>{{ order_detail.tracking_id }}</span></h4>
+
+                                <!-- Cart Bar -->
+                                <div class="cart_bar">
+                                    <ul class="cart_bar_list item_list d-flex flex-row align-items-center justify-content-start">
+                                        <li>Product</li>
+                                        <li>Color</li>
+                                        <li>Size</li>
+                                        <li>Price</li>
+                                        <li>Quantity</li>
+                                        <li>Total</li>
+
+                                    </ul>
+                                </div>
+
+                                <!-- Cart Items -->
+                                <div class="cart_items">
+                                    <ul class="cart_items_list">
+                                        {% for cart in order_detail.order_detail_related_order.all %}
+
+                                            <!-- Cart Item -->
+                                            <li class="cart_item item_list d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
+                                                <div class="product d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
+                                                    <div>
+                                                        <div class="product_image"><img
+                                                                src="{{ cart.product.image.url }}" alt=""></div>
+                                                    </div>
+                                                    <div class="product_name"><a
+                                                            href="{% url 'FullStackApp:product-detail' cart.product.id %}">{{ cart.product.name }}</a>
+                                                    </div>
+
+                                                </div>
+                                                <div class="product_color text-lg-center product_text">
+                                                    <span>Color: </span>{{ cart.product.get_default_colour.value }}
+                                                </div>
+                                                <div class="product_size text-lg-center product_text">
+                                                    <span>Size: </span>{{ cart.product.get_default_size.value }}
+                                                </div>
+                                                <div class="product_price text-lg-center product_text">
+                                                    <span>Price: </span>${{ cart.unit_cost }}</div>
+                                                <div class="product_quantity_container">
+                                                    <div class="product_quantity ml-lg-auto mr-lg-auto text-center">
+                                                        <span id="{{ cart.product.id }}_quantity"
+                                                              class="quantity product_text product_num ">{{ cart.quantity }}</span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="product_total text-lg-center product_text">
+                                                    <span>Total: </span> ${% multiply cart.quantity cart.unit_cost %}</div>
+                                                {#                                        <div class="product_total text-lg-center product_text"><span>Total: </span>$19.50</div>#}
+
+
+
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+          {% endif %}
+    </div>
+
+
+{% endblock %}

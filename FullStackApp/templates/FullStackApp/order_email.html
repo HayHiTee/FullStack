@@ -1,0 +1,22 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Order Successful</title>
+</head>
+<body>
+<h1>Congratulations</h1>
+<p>Your Order is Successfully. Your Order Tracking Details are below, kindly keep it safe.</p>
+<br>
+<p>Tracking Id:{{ tracking_id }} </p>
+<br>
+<p> Kindly Log in to track your order</p>
+<a href="{{ protocol }}://{{ domain }}{% url 'login' %}">Sign in</a>
+
+<p>You can check more products here</p>
+<a href="{{ protocol }}://{{ domain }}{% url 'FullStackApp:home' %}">Turing Shopping Cart</a>
+
+</body>
+</html>

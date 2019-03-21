@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/plugins/OwlCarousel2-2.2.1/animate.css' %}">
     {% block linked_style %}
 
-     {% endblock  %}
+    {% endblock %}
 
     <style>
         .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
@@ -46,10 +47,12 @@
             background-color: #ddd;
             color: white;
         }
+
         .pagination {
             margin: 0 !important;
         }
-        .errorlist{
+
+        .errorlist {
             color: red;
         }
     </style>
@@ -69,7 +72,7 @@
             <!-- Logo -->
             <div class="header_logo">
                 <a href="#">
-                     <img src="{% static 'FullStackApp/images/tshirtshop.png' %}" width="200", height="50">
+                    <img src="{% static 'FullStackApp/images/tshirtshop.png' %}" width="200" , height="50">
                 </a>
             </div>
 
@@ -89,37 +92,81 @@
             <div class="header_extra ml-auto d-flex flex-row align-items-center justify-content-start">
 
                 <!-- Language -->
-                <div class="info_languages has_children">
-                    <div class="language_flag"><img src="{% static 'FullStackApp/images/flag_1.svg' %}"
-                                                    alt="https://www.flaticon.com/authors/freepik "></div>
-                    <div class="dropdown_text">english</div>
-                    <div class="dropdown_arrow"><i class="fa fa-angle-down" aria-hidden="true"></i></div>
+                {#                <div class="info_languages has_children">#}
+                {#                    <div class="language_flag"><img src="{% static 'FullStackApp/images/flag_1.svg' %}"#}
+                {#                                                    alt="https://www.flaticon.com/authors/freepik "></div>#}
+                {#                    <div class="dropdown_text">english</div>#}
+                {#                    <div class="dropdown_arrow"><i class="fa fa-angle-down" aria-hidden="true"></i></div>#}
+                {##}
+                {#                    <!-- Language Dropdown Menu -->#}
+                {#                    <ul>#}
+                {#                        <li><a href="#">#}
+                {#                            <div class="language_flag"><img src="{% static 'FullStackApp/images/flag_2.svg' %}"#}
+                {#                                                            alt="https://www.flaticon.com/authors/freepik"></div>#}
+                {#                            <div class="dropdown_text">french</div>#}
+                {#                        </a></li>#}
+                {#                        <li><a href="#">#}
+                {#                            <div class="language_flag"><img src="{% static 'FullStackApp/images/flag_3.svg' %}"#}
+                {#                                                            alt="https://www.flaticon.com/authors/freepik"></div>#}
+                {#                            <div class="dropdown_text">japanese</div>#}
+                {#                        </a></li>#}
+                {#                        <li><a href="#">#}
+                {#                            <div class="language_flag"><img src="{% static 'FullStackApp/images/flag_4.svg' %}"#}
+                {#                                                            alt="https://www.flaticon.com/authors/freepik"></div>#}
+                {#                            <div class="dropdown_text">russian</div>#}
+                {#                        </a></li>#}
+                {#                        <li><a href="#">#}
+                {#                            <div class="language_flag"><img src="{% static 'FullStackApp/images/flag_5.svg' %}"#}
+                {#                                                            alt="https://www.flaticon.com/authors/freepik"></div>#}
+                {#                            <div class="dropdown_text">spanish</div>#}
+                {#                        </a></li>#}
+                {#                    </ul>#}
+                {##}
+                {#                </div>#}
 
-                    <!-- Language Dropdown Menu -->
-                    <ul>
-                        <li><a href="#">
-                            <div class="language_flag"><img src="{% static 'FullStackApp/images/flag_2.svg' %}"
-                                                            alt="https://www.flaticon.com/authors/freepik"></div>
-                            <div class="dropdown_text">french</div>
-                        </a></li>
-                        <li><a href="#">
-                            <div class="language_flag"><img src="{% static 'FullStackApp/images/flag_3.svg' %}"
-                                                            alt="https://www.flaticon.com/authors/freepik"></div>
-                            <div class="dropdown_text">japanese</div>
-                        </a></li>
-                        <li><a href="#">
-                            <div class="language_flag"><img src="{% static 'FullStackApp/images/flag_4.svg' %}"
-                                                            alt="https://www.flaticon.com/authors/freepik"></div>
-                            <div class="dropdown_text">russian</div>
-                        </a></li>
-                        <li><a href="#">
-                            <div class="language_flag"><img src="{% static 'FullStackApp/images/flag_5.svg' %}"
-                                                            alt="https://www.flaticon.com/authors/freepik"></div>
-                            <div class="dropdown_text">spanish</div>
-                        </a></li>
-                    </ul>
 
-                </div>
+                {% if request.user.is_authenticated %}
+                    <div class=" has_children">
+
+                        <div class="dropdown_text">{% trans 'Hi,' %}
+
+                        </div>
+                        <div class="dropdown_arrow"><i class="fa fa-angle-down" aria-hidden="true"></i></div>
+
+                        <!-- User Dropdown Menu -->
+                        <ul>
+                            <li>
+
+                                <a href="{% url 'FullStackApp:list-orders' %}">{% trans 'Your Orders' %}</a>
+
+                            </li>
+                            <li>
+                                <strong>{% firstof request.user.get_short_name request.user.get_username %}</strong>.
+                            </li>
+
+                            {% if site_url %}
+                                <li>
+
+                                    <a href="{{ site_url }}">{% trans 'View site' %}</a>
+
+                                </li>
+                            {% endif %}
+
+                            {% if request.user.has_usable_password %}
+                                <li>
+
+                                    <a href="{% url 'password_change' %}">{% trans 'Change password' %}</a>
+
+                                </li>
+                            {% endif %}
+
+                            <li><a href="{% url 'logout' %}">{% trans 'Log out' %}</a></li>
+
+                        </ul>
+
+                    </div>
+
+                {% endif %}
 
                 <!-- Currency -->
                 <div class="info_currencies has_children">
@@ -236,9 +283,12 @@
         <nav class="menu_nav">
             <ul class="menu_mm">
                 <li class="menu_mm"><a href="{% url 'FullStackApp:home' %}">home</a></li>
-                <li class="menu_mm"><a href="{% url 'FullStackApp:product-category' %}?categories=French">French</a></li>
-                <li class="menu_mm"><a href="{% url 'FullStackApp:product-category' %}?categories=Italian">Italian</a></li>
-                <li class="menu_mm"><a href="{% url 'FullStackApp:product-category' %}?categories=Christmas">Christmas</a></li>
+                <li class="menu_mm"><a href="{% url 'FullStackApp:product-category' %}?categories=French">French</a>
+                </li>
+                <li class="menu_mm"><a href="{% url 'FullStackApp:product-category' %}?categories=Italian">Italian</a>
+                </li>
+                <li class="menu_mm"><a
+                        href="{% url 'FullStackApp:product-category' %}?categories=Christmas">Christmas</a></li>
                 <li class="menu_mm"><a href="#">blog</a></li>
                 <li class="menu_mm"><a href="#">contact</a></li>
             </ul>
@@ -320,24 +370,74 @@
                 </div>
 
             </div>
+
         </div>
 
         <!-- Logo -->
         <div class="sidebar_logo">
             <a href="#">
-{#                <div>a<span>star</span></div>#}
-                 <img src="{% static 'FullStackApp/images/tshirtshop.png' %}" width="200", height="70">
+                {#                <div>a<span>star</span></div>#}
+                <img src="{% static 'FullStackApp/images/tshirtshop.png' %}" width="200" , height="70">
             </a>
         </div>
 
+
         <!-- Sidebar Navigation -->
         <nav class="sidebar_nav">
+            {#        user tools#}
+
+            {% if request.user.is_authenticated %}
+                <div class=" has_children">
+
+                    <div class="dropdown_text">{% trans 'Welcome,' %}
+                        <strong>{% firstof request.user.get_short_name request.user.get_username %}</strong>.
+                    </div>
+                    <div class="dropdown_arrow"><i class="fa fa-angle-down" aria-hidden="true"></i></div>
+
+                    <!-- User Dropdown Menu -->
+                    <ul>
+                        {% if request.user.is_customer %}
+                            <li>
+
+                                <a href="{% url 'FullStackApp:list-orders' %}">{% trans 'Your Orders' %}</a>
+
+                            </li>
+                        {% endif %}
+                        {% if site_url %}
+                            <li>
+
+                                <a href="{{ site_url }}">{% trans 'View site' %}</a>
+
+                            </li>
+                        {% endif %}
+
+                        {% if request.user.has_usable_password %}
+                            <li>
+
+                                <a href="{% url 'password_change' %}">{% trans 'Change password' %}</a>
+
+                            </li>
+                        {% endif %}
+
+                        <li><a href="{% url 'logout' %}">{% trans 'Log out' %}</a></li>
+
+
+                    </ul>
+
+                </div>
+
+            {% endif %}
+
             <ul>
-                <li><a href="{% url 'FullStackApp:home' %}">home<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                <li><a href="{% url 'FullStackApp:product-category' %}?categories=French">french<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                <li><a href="{% url 'FullStackApp:product-category' %}?categories=Italian">Italian<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                <li><a href="{% url 'FullStackApp:product-category' %}?categories=Christmas">christmas<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                <li><a href="#">blog<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                <li><a href="{% url 'FullStackApp:home' %}">home<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                </li>
+                <li><a href="{% url 'FullStackApp:product-category' %}?categories=French">french<i
+                        class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                <li><a href="{% url 'FullStackApp:product-category' %}?categories=Italian">Italian<i
+                        class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                <li><a href="{% url 'FullStackApp:product-category' %}?categories=Christmas">christmas<i
+                        class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                {#                <li><a href="#">blog<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>#}
                 <li><a href="#">contact<i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
             </ul>
         </nav>
@@ -367,7 +467,8 @@
     <!-- Newsletter -->
 
     <div class="newsletter">
-        <div class="parallax_background parallax-window" data-parallax="scroll" data-image-src="{% static 'FullStackApp/images/newsletter.jpg'%}"
+        <div class="parallax_background parallax-window" data-parallax="scroll"
+             data-image-src="{% static 'FullStackApp/images/newsletter.jpg' %}"
              data-speed="0.8"></div>
         <div class="container">
             <div class="row">
@@ -404,8 +505,9 @@
                                 <!-- Logo -->
                                 <div class="footer_logo">
                                     <a href="#">
-{#                                        <div>a<span>star</span></div>#}
-                                         <img src="{% static 'FullStackApp/images/tshirtshop.png' %}" width="200", height="70">
+                                        {#                                        <div>a<span>star</span></div>#}
+                                        <img src="{% static 'FullStackApp/images/tshirtshop.png' %}" width="200" ,
+                                             height="70">
                                     </a>
                                 </div>
                                 <div class="footer_about_text">
@@ -599,7 +701,7 @@
 
                                     Copyright &copy;<script>document.write(new Date().getFullYear());</script>
                                     All rights reserved | This app is made with <i class="fa fa-heart-o"
-                                                                                        aria-hidden="true"></i> by <a
+                                                                                   aria-hidden="true"></i> by <a
                                         href="https:hayhitee.herokuapp.com" target="_blank">Hayhitee</a>
 
                                 </div>

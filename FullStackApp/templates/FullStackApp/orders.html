@@ -1,0 +1,83 @@
+{% extends 'FullStackApp/base.html' %}
+{% load static %}
+{% block linked_style %}
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/styles/cart.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/styles/cart_responsive.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+     <div class="home">
+        <div class="parallax_background parallax-window" data-parallax="scroll"
+             data-image-src="{% static 'FullStackApp/images/product_background.jpg' %}" data-speed="0.8"></div>
+        <div class="home_container">
+            <div class="home_content">
+                <div class="home_title">Cart</div>
+                <div class="breadcrumbs">
+                    <ul class="d-flex flex-row align-items-center justify-content-start">
+                        <li><a href="{% url 'FullStackApp:home' %}">Home</a></li>
+                        <li>Your ORDERS</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+ <div id="portlet2" class="panel-collapse  in">
+                    <div class="portlet-body">
+                        <div class="table-responsive">
+                            <table id="example" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Tracking Id</th>
+                                    <th>Total Amount</th>
+                                    <th>Created On</th>
+                                    <th>Shipped on</th>
+                                    <th>Status</th>
+                                    <th>Comments</th>
+                                    <th>Reference</th>
+                                    <th>Shipping</th>
+                                    <th>Tax</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% if orders %}
+                                    {% for order in orders %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>
+                                                <a href="{% url 'FullStackApp:order-detail' order.pk %}">{{ order.tracking_id }}</a>
+                                                </td>
+                                            <td>${{ order.total_amount }}</td>
+                                            <td> {{ order.created_on}}</td>
+                                            <td> {{ order.shipped_on }}</td>
+                                            <td> {{ order.status }}</td>
+                                            <td>{{ order.comments }}</td>
+                                            <td>{{ order.reference }}</td>
+                                            <td>{{ order.shipping }}</td>
+                                            <td>${{ order.tax }}</td>
+{#                                            <td>#}
+{#                                                <a class="btn btn-primary" type="button" data-toggle="modal"#}
+{#                                                   href="#">#}
+{#                                                    <i class="fa fa-trash"> </i>#}
+{#                                                </a>#}
+{#                                            </td>#}
+
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+{% endblock %}
