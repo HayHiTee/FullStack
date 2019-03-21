@@ -166,6 +166,9 @@
 
                     </div>
 
+                    {% else %}
+                     <div><a href="{% url 'login' %}">{% trans 'Log In' %}</a></div>
+
                 {% endif %}
 
                 <!-- Currency -->
@@ -425,6 +428,10 @@
                     </ul>
 
                 </div>
+
+                {% else %}
+                     <div><a href="{% url 'login' %}">{% trans 'Log In' %}</a></div>
+                    <br>
 
             {% endif %}
 

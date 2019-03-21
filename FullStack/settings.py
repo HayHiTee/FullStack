@@ -180,7 +180,7 @@ print(os.environ.get('SEND_GRID_API_KEY'))
 EMAIL_USE_TLS = True
 
 
-DEFAULT_FROM_EMAIL = 'Turing Shopping  <noreply@gmail.com>'
+DEFAULT_FROM_EMAIL = 'Turing Shopping  <codersserver@gmail.com>'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
