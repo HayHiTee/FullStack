@@ -255,7 +255,8 @@
                                                     <label class="radio_container">
                                                         <input type="radio" id="radio_{{ ship.id }}"
                                                                name="shipping_radio"
-                                                               class="shipping_radio" value="{{ ship.id }}" {% if forloop.counter == 1 %}checked{% endif %}>
+                                                               class="shipping_radio" value="{{ ship.id }}"
+                                                               {% if forloop.counter == 1 %}checked{% endif %}>
                                                         <span class="radio_mark"></span>
                                                         <span class="radio_text">{{ ship.shipping_type }}</span>
                                                     </label>
@@ -308,8 +309,9 @@
 
                                         <button class="btn  checkout_button trans_200">
                                             {% if  request.user.is_authenticated and user.is_customer %}PROCEED TO
-                                                CHECKOUT {% else %}PROCEED TO CHECKOUT AS NEW
-                                                CUSTOMER{% endif %}</button>
+                                                CHECKOUT {% else %}CHECKOUT AS NEW
+                                                CUSTOMER{% endif %}
+                                        </button>
 
 
                                     </form>
