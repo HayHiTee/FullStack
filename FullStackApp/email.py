@@ -1,8 +1,10 @@
-from django.conf.global_settings import DEFAULT_FROM_EMAIL
+
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+
+from FullStack.settings import DEFAULT_FROM_EMAIL
 
 
 def send_email(subject, body, to_email):
