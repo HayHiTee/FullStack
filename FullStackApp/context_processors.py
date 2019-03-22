@@ -1,6 +1,7 @@
 from FullStackApp.cart import Cart
 
 
+# The cart allows us to make the cart items variable available for all templates
 def cart(request):
     # Create fixed data structures to pass to template
     # data could equally come from database queries

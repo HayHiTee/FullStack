@@ -9,6 +9,8 @@ from FullStackApp.models import Product, Shipping
 from .cart import Cart
 
 
+
+# The view that adds Cart for user through the url
 @require_POST
 def cart_add(request, product_id):
     cart = Cart(request)
@@ -44,6 +46,7 @@ def cart_add(request, product_id):
 #     response['msg'] = 'Cart Successfully updated'
 #     return JsonResponse(response)
 
+# The view that updates Cart for user through the url
 @require_POST
 def cart_update(request):
     data = request.POST
@@ -68,18 +71,21 @@ def cart_update(request):
     return JsonResponse(response)
 
 
+# The view that removes Cart for user through the url
 def cart_remove(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.remove(product)
     return redirect('FullStackApp:carts')
 
+# The view that removes all Carts for user through the url
 def cart_remove_all(request):
     cart = Cart(request)
     # cart.remove_all()
     cart.clear()
     return redirect('FullStackApp:carts')
 
+# The view that lists all added Carts for user through the url
 def cart_lists(request):
     cart = Cart(request)
     print(len(cart))

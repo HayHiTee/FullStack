@@ -39,7 +39,7 @@ pip3 install -r requirements.txt
 
 # Usage
 
-Add or make changes to 'CashCard/settings.py' with the following if they are not already included.
+Add or make changes to 'FullStack/settings.py' with the following if they are not already included.
 
 Configure and choose Database type- Default is Sqlite.
 
@@ -118,14 +118,27 @@ python manage.py migrate
 
 ```
 
+populate the database with already existing data
+```bash
+python populate_data.py
+
+```
+
 Start the server
 
-If 'My Port' is not included, server starts at 8000
+If 'My Port' is not included, server starts at 8000 if you are running locally
 
 ```bash
 python manage.py runserver 'My Port'
 
 ```
+
+*   Access the Admin Page at: '/admin/'
+
+*   Admin Credentials:
+    *   Username: test-admin
+    *   Password: Password@001
+
 
 ## Production
 Check out [deploying django to heroku](https://devcenter.heroku.com/articles/django-app-configuration) 
@@ -142,7 +155,7 @@ django_heroku.settings(locals())
 
 * Create 'runtime.txt' in the root repository and add the following
 ```bash
-python-3.7.1
+python-3.7.2
 ```
 
 * Create 'Procfile' file in the root repository and add the following

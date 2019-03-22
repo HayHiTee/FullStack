@@ -21,6 +21,7 @@ from FullStackApp.models import Product, ShoppingCart, Category, ProductCategory
     Shipping
 
 
+# Class that lists all the orders requested by the customer to the customer
 @method_decorator([login_required, customer_required], name='dispatch')
 class ListOrders(ListView):
     template_name = 'FullStackApp/orders.html'
@@ -36,6 +37,7 @@ class ListOrders(ListView):
         return qs
 
 
+# Class that lists all the orders details requested by the customer to the customer
 @method_decorator([login_required, customer_required], name='dispatch')
 class OrderDetailView(DetailView):
     template_name = 'FullStackApp/order_details.html'
@@ -56,6 +58,7 @@ class OrderDetailView(DetailView):
 #     context_object_name = 'order_details'
 
 
+# Class that lists all the Product available in the database
 class ListProduct(ListView):
     template_name = 'FullStackApp/index.html'
     model = Product
@@ -69,6 +72,7 @@ class ListProduct(ListView):
         return context_data
 
 
+# Class that lists all the Product Category available in the database
 class ListProductCategory(ListProduct):
     template_name = 'FullStackApp/categories.html'
     current_category = 'All'
@@ -96,6 +100,7 @@ class ListProductCategory(ListProduct):
         return context_data
 
 
+# Class that shows each Product details available in the database
 class ProductDetail(DetailView):
     template_name = 'FullStackApp/product.html'
     model = Product
@@ -133,13 +138,13 @@ class CartViewList(View):
 
     pass
 
-
+# Order SUccess page Class
 class CartOrderSuccess(TemplateView):
     template_name = 'FullStackApp/cart_success.html'
 
 
 
-
+# Checkout View Class
 class Checkout(FormView):
     template_name = 'FullStackApp/checkout.html'
     form_class = CustomerOrderForm
@@ -244,6 +249,7 @@ class Checkout(FormView):
         return response
 
 
+# CHeck out for alaready registered and Valid AUTH CUSTOMER
 @login_required()
 @require_POST
 @transaction.atomic

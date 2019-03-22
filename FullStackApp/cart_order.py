@@ -7,6 +7,9 @@ from FullStackApp.models import Orders, Shipping
 def generate_token(k=5):
     return ''.join(random.choices(string.digits, k=k))
 
+# A class that creates a Cart Object from Model and
+# generates unique token or tracking Id
+# for each cart object stored in the model database
 class CartOrder:
     def create_order(self, total_amount, shipping):
         trck_id = self._generate_tracking_id()

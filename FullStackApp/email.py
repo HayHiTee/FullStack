@@ -15,6 +15,7 @@ def send_email(subject, body, to_email):
     )
 
 
+# Email function that sends order details to customer
 def send_order_email(to_email, tracking_id, request):
     subject = 'Account Creation'
     current_site = get_current_site(request)
@@ -31,6 +32,7 @@ def send_order_email(to_email, tracking_id, request):
     # send_email(subject, email_msg, to_email)
 
 
+# Email function that account details to new user
 def send_email_account_created(to_email, username, password, request):
     subject = 'Account Creation'
     current_site = get_current_site(request)

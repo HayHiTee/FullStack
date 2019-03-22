@@ -3,7 +3,7 @@ from django.conf import settings
 
 from FullStackApp.models import Product
 
-
+# A cart class that controls the logic of all carts
 class Cart:
     def __init__(self, request):
         self.session = request.session

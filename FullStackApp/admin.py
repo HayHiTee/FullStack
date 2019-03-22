@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+#Admin Dashboard
+
 # Register your models here.
 from FullStackApp.models import User, Product, Customer, Orders, OrderDetail, ShippingRegion, Shipping, Attribute, \
     AttributeValue, Tax, ProductAttribute, ProductCategory

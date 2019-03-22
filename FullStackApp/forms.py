@@ -23,6 +23,7 @@ class CartUpdateProductForm(CartAddProductForm):
         self.fields['quantity'].hidden_widget = False
 
 
+# THis form is used to collect custoomer info during checkout
 class CustomerOrderForm(forms.Form):
     first_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'checkout_input'}))
     last_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'checkout_input'}))
@@ -43,6 +44,7 @@ class CustomerOrderForm(forms.Form):
                                         widget=forms.CheckboxInput(attrs={'class': 'billing_checkbox'}))
 
 
+    # Validation of forms below
     def clean_accept_terms(self):
         accept_terms = self.cleaned_data['accept_terms']
         if not accept_terms:
