@@ -143,6 +143,8 @@ python manage.py runserver 'My Port'
 ## Production
 Check out [deploying django to heroku](https://devcenter.heroku.com/articles/django-app-configuration) 
 
+Production is hosted [here](http://turing-shopping-cart.herokuapp.com/)
+
 * Add the following to settings
 
 ```python
