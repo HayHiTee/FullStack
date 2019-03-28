@@ -188,7 +188,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 PAYPAL_TEST = True
 
-XFF_TRUSTED_PROXY_DEPTH = 2
+XFF_TRUSTED_PROXY_DEPTH = 1
 
 XFF_NO_SPOOFING = True
 
