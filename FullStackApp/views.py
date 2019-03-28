@@ -13,6 +13,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView
 from paypal.standard.forms import PayPalPaymentsForm
 
+from FullStack.settings import PAYPAL_RECEIVER_EMAIL
 from FullStackApp.cart import Cart
 from FullStackApp.cart_order import CartOrder
 from FullStackApp.decorators import customer_required
@@ -311,16 +312,17 @@ def view_that_asks_for_money(request):
 
     # What you want the button to do.
     paypal_dict = {
-        "business": "youngest50@gmail.com",
-        "amount": "10000000.00",
+        "business": PAYPAL_RECEIVER_EMAIL,
+        "amount": 1000.00,
         "item_name": "name of the item",
         "invoice": "unique-invoice-id",
         "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
-        "return": request.build_absolute_uri(reverse('FullStackApp:checkout')),
+        "return": request.build_absolute_uri(reverse('FullStackApp:cart_order_success')),
         "cancel_return": request.build_absolute_uri(reverse('FullStackApp:carts')),
         "custom": "premium_plan",  # Custom command to correlate to some function later (optional)
     }
 
+    print(paypal_dict)
     # Create the instance.
     form = PayPalPaymentsForm(initial=paypal_dict)
     context = {"form": form}

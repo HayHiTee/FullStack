@@ -186,6 +186,9 @@ DEFAULT_FROM_EMAIL = 'Turing Shopping <noreply@example.com>'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+PAYPAL_RECEIVER_EMAIL = 'codersserver-facilitator@gmail.com'
+
+
 PAYPAL_TEST = True
 
 XFF_TRUSTED_PROXY_DEPTH = 1
