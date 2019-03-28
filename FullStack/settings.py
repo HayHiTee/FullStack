@@ -65,6 +65,7 @@ LOGOUT_REDIRECT_URL = 'login'
 # Application definition
 
 INSTALLED_APPS = [
+    'paypal.standard.ipn',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,6 +76,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'xff.middleware.XForwardedForMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -184,6 +186,18 @@ DEFAULT_FROM_EMAIL = 'Turing Shopping <noreply@example.com>'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+PAYPAL_TEST = True
+
+XFF_TRUSTED_PROXY_DEPTH = 2
+
+XFF_NO_SPOOFING = True
+
+# XFF_STRICT = True
+
+# XFF_TRUSTED_PROXY_DEPTH = 1
+# XFF_EXEMPT_URLS = [r'^health/']
+# XFF_REQUIRE_HEADER = True
+# XFF_EXEMPT_STEALTH = True
 
 # Should be at the bottoom
 django_heroku.settings(locals())

@@ -1,0 +1,41 @@
+{% extends 'FullStackApp/base.html' %}
+{% load static %}
+{% block linked_style %}
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/styles/cart.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'FullStackApp/styles/cart_responsive.css' %}">
+{% endblock %}
+
+{% block linked_script %}
+    <script src="{% static 'FullStackApp/js/cart.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="home">
+        <div class="parallax_background parallax-window" data-parallax="scroll"
+             data-image-src="{% static 'FullStackApp/images/product_background.jpg' %}" data-speed="0.8"></div>
+        <div class="home_container">
+            <div class="home_content">
+                <div class="home_title">Cart</div>
+                <div class="breadcrumbs">
+                    <ul class="d-flex flex-row align-items-center justify-content-start">
+                        <li><a href="{% url 'FullStackApp:home' %}">Home</a></li>
+                        <li>Your Cart</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart -->
+
+    <div class="cart_section">
+        <h1>Show me the money!</h1>
+        <!-- writes out the form tag automatically -->
+        {{ form.render }}
+    </div>
+
+
+{% endblock %}

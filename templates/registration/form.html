@@ -1,87 +1,287 @@
-{#{% load crispy_forms_tags %}#}
+
 {% csrf_token %}
-{#            {{ form|crispy }}#}
-{#            {{ form|crispy }}#}
 <div class="text-danger">{{ form.non_field_errors }}</div>
 
-{#{{ form.as_p }}#}
-{% if form.username %}
-    <div class="form-label-group">
-        {{ form.username.errors }}
-        <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required
-               autofocus>
-        <label for="inputUsername">Username/Email</label>
-    </div>
+{% if form.first_name or form.last_name %}
+<div class="row">
+    <div class="col-lg-6">
+        <!-- Name -->
+        <p class="text-danger">{{ form.first_name.errors }}</p>
+        <label for="id_first_name">First Name*</label>
+        {#												<input type="text" id="checkout_name" class="checkout_input" required="required">#}
 
+        {{ form.first_name }}
+    </div>
+    <div class="col-lg-6">
+        <!-- Last Name -->
+        <p class="text-danger">{{ form.last_name.errors }}</p>
+        <label for="id_last_name">Last Name*</label>
+        {#												<input type="text" id="checkout_last_name" class="checkout_input" required="required">#}
+        {{ form.last_name }}
+    </div>
+</div>
+{% endif %}
+
+{% if form.username %}
+<div>
+    <!-- Username -->
+    <p class="text-danger">{{ form.username.errors }}</p>
+    <label for="id_username">Username*</label>
+{#    {{ form.username }}#}
+<input type="text" id="id_username" name="username" class="checkout_input" required="required">
+</div>
 {% endif %}
 
 {% if form.password %}
-    <div class="form-label-group">
-        {{ form.password.errors }}
-        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <label for="inputPassword">Password</label>
-    </div>
-
+<div>
+    <!-- Password -->
+    <p class="text-danger">{{ form.password.errors }}</p>
+    <label for="id_password">Password*</label>
+{#    {{ form.password }}#}
+<input type="password" id="id_password" name="password" class="checkout_input" required="required">
+</div>
 {% endif %}
 
 {% if form.password_2 %}
-    {{ form.password_2.errors }}
-    <div class="form-label-group">
-        <input name="password_2" type="password" id="inputPassword_2" class="form-control" placeholder="Password"
-               required>
-        <label for="inputPassword_2">Confirm Password</label>
-    </div>
+<div>
+    <!-- Confirm Password -->
+    <p class="text-danger">{{ form.password_2.errors }}</p>
+    <label for="id_password_2">Confirm Password*</label>
+    {{ form.password_2 }}
+</div>
 {% endif %}
 
-{% if form.old_password %}
-    {{ form.old_password.errors }}
-    <div class="form-label-group">
-        <input name="old_password" type="password" id="inputold_password" class="form-control" placeholder="Password"
-               required>
-        <label for="inputold_password">Old Password</label>
-    </div>
-{% endif %}
-
-{% if form.new_password1 %}
-    {{ form.new_password1.errors }}
-    <div class="form-label-group">
-        <input name="new_password1" type="password" id="inputnew_password1" class="form-control" placeholder="Password"
-               required>
-        <label for="inputnew_password1">New Password</label>
-
-    </div>
-{% endif %}
-
-
-{% if form.new_password2 %}
-    {{ form.new_password2.errors }}
-    <div class="form-label-group">
-        <input name="new_password2" type="password" id="inputnew_password2" class="form-control" placeholder="Password"
-               required>
-        <label for="inputnew_password2">Confirm New Password</label>
-    <div class="help">
-            <ul>
-                <li>Your password can&#39;t be too similar to your other personal information.</li>
-                <li>Your password must contain at least 8 characters.</li>
-                <li>Your password can&#39;t be a commonly used password.</li>
-                <li>Your password can&#39;t be entirely numeric.</li>
-            </ul>
-        </div>
-    </div>
-
+{% if form.phone_number %}
+<div>
+    <!-- Phone Number -->
+    <p class="text-danger">{{ form.phone_number.errors }}</p>
+    <label for="id_phone_number">Phone Number*</label>
+    {{ form.phone_number }}
+</div>
 {% endif %}
 
 {% if form.email %}
-    {{ form.email.errors }}
-    <div class="form-label-group">
-        <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required
-               autofocus>
-        <label for="inputEmail">Email address</label>
-    </div>
-
+<div>
+    <!-- EMail -->
+    <p class="text-danger">{{ form.email.errors }}</p>
+    <label for="id_email">Email Address*</label>
+{#    {{ form.email }}#}
+<input type="text" id="id_email" name="email" class="checkout_input" required="required">
+</div>
 {% endif %}
 
+{% if form.company %}
+<div>
+    <!-- Company -->
+    <p class="text-danger">{{ form.company.errors }}</p>
+    <label for="id_company">Company</label>
+    {#											<input type="text" id="checkout_company" class="checkout_input">#}
+    {{ form.company }}
+</div>
+{% endif %}
 
+{% if form.country %}
+<div>
+    <!-- Country -->
+    <p class="text-danger">{{ form.country.errors }}</p>
+    <label for="id_country">Country*</label>
+    {{ form.country }}
+
+</div>
+{% endif %}
+
+{% if form.address %}
+<div>
+
+    <p class="text-danger">{{ form.address.errors }}</p>
+    <p class="text-danger">{{ form.addtess_1.errors }}</p>
+    <label for="id_address">Address*</label>
+
+    {{ form.address }}
+    {{ form.address_2 }}
+</div>
+{% endif %}
+
+{% if form.zipcode %}
+<div>
+    <!-- Zipcode -->
+    <p class="text-danger">{{ form.zipcode.errors }}</p>
+    <label for="id_zipcode">Zipcode*</label>
+    {{ form.zipcode }}
+    {#											<input type="text" id="checkout_zipcode" class="checkout_input" required="required">#}
+</div>
+{% endif %}
+
+{% if form.city %}
+<div>
+    <!-- City / Town -->
+    <p class="text-danger">{{ form.city.errors }}</p>
+    <label for="id_city">City/Town*</label>
+    {{ form.city }}
+</div>
+{% endif %}
+
+{% if form.old_password %}
+<div>
+    <!-- Old Password -->
+    <p class="text-danger">{{ form.old_password.errors }}</p>
+    <label for="id_old_password">Old Password*</label>
+{#    {{ form.old_password }}#}
+<input type="password" id="id_old_password" name="old_password" class="checkout_input" required="required">
+</div>
+{% endif %}
+
+{% if form.new_password1 %}
+<div>
+    <!-- New Password 1 -->
+    <p class="text-danger">{{ form.new_password1.errors }}</p>
+    <label for="id_new_password1">New Password*</label>
+{#    {{ form.new_password1 }}#}
+<input type="password" id="id_new_password1" name="new_password1" class="checkout_input" required="required">
+</div>
+{% endif %}
+
+{% if form.new_password2 %}
+<div>
+    <!-- NEw Password 2-->
+    <p class="text-danger">{{ form.new_password2.errors }}</p>
+    <label for="id_new_password2">Confirm New Password*</label>
+{#    {{ form.new_password2}}#}
+<input type="password" id="id_new_password2" name="new_password2" class="checkout_input" required="required">
+    <div class="help">
+        <ul>
+            <li>Your password can&#39;t be too similar to your other personal information.</li>
+            <li>Your password must contain at least 8 characters.</li>
+            <li>Your password can&#39;t be a commonly used password.</li>
+            <li>Your password can&#39;t be entirely numeric.</li>
+        </ul>
+    </div>
+</div>
+{% endif %}
+{#<div>#}
+{#    <!-- Phone no -->#}
+{#    <p class="text-danger">{{ form.phone_number.errors }}</p>#}
+{#    <label for="id_phone_numner">Phone no*</label>#}
+{#    {{ form.phone_number }}#}
+    {#											<input type="phone" id="checkout_phone" class="checkout_input" required="required">#}
+{#</div>#}
+
+{#<div>#}
+{#    <!-- Email -->#}
+{#    <p class="text-danger">{{ form.email.errors }}</p>#}
+{#    <label for="checkout_email">Email Address*</label>#}
+{#    {{ form.email }}#}
+{#</div>#}
+
+
+{#{% if form.first_name %}#}
+{#    {{ form.first_name.errors }}#}
+{#    <div class="form-label-group">#}
+{#        <input name="first_name" type="email" id="inputFirstName" class="form-control" placeholder="First Name" required#}
+{#               autofocus>#}
+{#        <label for="inputFirstName">First Name</label>#}
+{#    </div>#}
+{##}
+{#{% endif %}#}
+{##}
+{#{% if form.last_name %}#}
+{#    {{ form.last_name.errors }}#}
+{#    <div class="form-label-group">#}
+{#        <input name="last_name" type="email" id="inputLastName" class="form-control" placeholder="First Name" required#}
+{#               autofocus>#}
+{#        <label for="inputLastName">Last Name</label>#}
+{#    </div>#}
+{##}
+{#{% endif %}#}
+{##}
+{#{% if form.email %}#}
+{#    {{ form.email.errors }}#}
+{#    <div class="form-label-group">#}
+{#        <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required#}
+{#               autofocus>#}
+{#        <label for="inputEmail">Email address</label>#}
+{#    </div>#}
+{##}
+{#{% endif %}#}
+{##}
+{##}
+{#{{ form.as_p }}#}
+{#{% if form.username %}#}
+{#    <div class="form-label-group">#}
+{#        {{ form.username.errors }}#}
+{#        <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required#}
+{#               autofocus>#}
+{#        <label for="inputUsername">Username/Email</label>#}
+{#    </div>#}
+{##}
+{#{% endif %}#}
+{##}
+{#{% if form.password %}#}
+{#    <div class="form-label-group">#}
+{#        {{ form.password.errors }}#}
+{#        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>#}
+{#        <label for="inputPassword">Password</label>#}
+{#    </div>#}
+{##}
+{#{% endif %}#}
+{##}
+{#{% if form.password_2 %}#}
+{#    {{ form.password_2.errors }}#}
+{#    <div class="form-label-group">#}
+{#        <input name="password_2" type="password" id="inputPassword_2" class="form-control" placeholder="Password"#}
+{#               required>#}
+{#        <label for="inputPassword_2">Confirm Password</label>#}
+{#    </div>#}
+{#{% endif %}#}
+{##}
+{#{% if form.old_password %}#}
+{#    {{ form.old_password.errors }}#}
+{#    <div class="form-label-group">#}
+{#        <input name="old_password" type="password" id="inputold_password" class="form-control" placeholder="Password"#}
+{#               required>#}
+{#        <label for="inputold_password">Old Password</label>#}
+{#    </div>#}
+{#{% endif %}#}
+{##}
+{#{% if form.new_password1 %}#}
+{#    {{ form.new_password1.errors }}#}
+{#    <div class="form-label-group">#}
+{#        <input name="new_password1" type="password" id="inputnew_password1" class="form-control" placeholder="Password"#}
+{#               required>#}
+{#        <label for="inputnew_password1">New Password</label>#}
+{##}
+{#    </div>#}
+{#{% endif %}#}
+{##}
+{##}
+{#{% if form.new_password2 %}#}
+{#    {{ form.new_password2.errors }}#}
+{#    <div class="form-label-group">#}
+{#        <input name="new_password2" type="password" id="inputnew_password2" class="form-control" placeholder="Password"#}
+{#               required>#}
+{#        <label for="inputnew_password2">Confirm New Password</label>#}
+{#    <div class="help">#}
+{#            <ul>#}
+{#                <li>Your password can&#39;t be too similar to your other personal information.</li>#}
+{#                <li>Your password must contain at least 8 characters.</li>#}
+{#                <li>Your password can&#39;t be a commonly used password.</li>#}
+{#                <li>Your password can&#39;t be entirely numeric.</li>#}
+{#            </ul>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#{% endif %}#}
+{##}
+{#{% if form.email %}#}
+{#    {{ form.email.errors }}#}
+{#    <div class="form-label-group">#}
+{#        <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required#}
+{#               autofocus>#}
+{#        <label for="inputEmail">Email address</label>#}
+{#    </div>#}
+{##}
+{#{% endif %}#}
+{##}
 
 
 {#    Preview Picture before Uploading#}

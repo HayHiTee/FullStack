@@ -10,13 +10,14 @@ from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.http import require_POST
-from django.views.generic import TemplateView, ListView, DetailView, FormView
+from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView
+from paypal.standard.forms import PayPalPaymentsForm
 
 from FullStackApp.cart import Cart
 from FullStackApp.cart_order import CartOrder
 from FullStackApp.decorators import customer_required
 from FullStackApp.email import send_email_account_created, send_order_email
-from FullStackApp.forms import CartAddProductForm, CustomerOrderForm
+from FullStackApp.forms import CartAddProductForm, CustomerOrderForm, CustomerRegistrationForm
 from FullStackApp.models import Product, ShoppingCart, Category, ProductCategory, User, Customer, Orders, OrderDetail, \
     Shipping
 
@@ -143,6 +144,11 @@ class CartOrderSuccess(TemplateView):
     template_name = 'FullStackApp/cart_success.html'
 
 
+class CustomerRegistrationView(CreateView):
+    template_name = 'registration/register.html'
+    form_class = CustomerRegistrationForm
+    success_url = reverse_lazy('login')
+
 
 # Checkout View Class
 class Checkout(FormView):
@@ -250,7 +256,6 @@ class Checkout(FormView):
 
 
 # CHeck out for alaready registered and Valid AUTH CUSTOMER
-@login_required()
 @require_POST
 @transaction.atomic
 def check_out_auth_customer(request):
@@ -300,3 +305,27 @@ def check_out_auth_customer(request):
     )
 
     return redirect('FullStackApp:cart_order_success')
+
+
+def view_that_asks_for_money(request):
+
+    # What you want the button to do.
+    paypal_dict = {
+        "business": "receiver_email@example.com",
+        "amount": "10000000.00",
+        "item_name": "name of the item",
+        "invoice": "unique-invoice-id",
+        "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+        "return": request.build_absolute_uri(reverse('FullStackApp:checkout')),
+        "cancel_return": request.build_absolute_uri(reverse('FullStackApp:carts')),
+        "custom": "premium_plan",  # Custom command to correlate to some function later (optional)
+    }
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    context = {"form": form}
+    return render(request, "FullStackApp/payment.html", context)
+
+
+# def paypal_return_view(request):
+#     pass
