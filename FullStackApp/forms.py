@@ -102,11 +102,15 @@ class CustomerRegistrationForm(ModelForm):
     @transaction.atomic
     def save(self, commit=True):
         user = super().save()
+        password = self.cleaned_data['password']
+        user.set_password(password)
+        user.is_customer = True
+        user.save()
         address = address_2 = self.cleaned_data['address']
         city = self.cleaned_data['city']
         zipcode = self.cleaned_data['zipcode']
         country = self.cleaned_data['country']
-        shipping_region = self.cleaned_data['shipping_region']
+        shipping_region = self.cleaned_data['country']
         phone_number = self.cleaned_data['phone_number']
         customer = Customer.objects.create(user=user, address_1=address_2, address_2=address_2,
                                            city=city, region='Europe',

@@ -150,6 +150,14 @@ class CustomerRegistrationView(CreateView):
     form_class = CustomerRegistrationForm
     success_url = reverse_lazy('login')
 
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password']
+        phone_number = form.cleaned_data['phone_number']
+        send_email_account_created(email, email, password, self.request)
+        response = super().form_valid(form)
+        return response
+
 
 # Checkout View Class
 class Checkout(FormView):
