@@ -163,13 +163,14 @@ class Orders(models.Model):
     shipped_on = models.DateTimeField(null=True)
     status = models.IntegerField(default=0)
     comments = models.CharField(max_length=255, null=True)
-
+    has_paid = models.BooleanField(default=False)
     auth_code = models.CharField(max_length=50, null=True)
     reference = models.CharField(max_length=50, null=True)
     shipping = models.ForeignKey(Shipping, on_delete=models.CASCADE, related_name='orders_related_shipping')
     tax = models.ForeignKey(Tax, on_delete=models.CASCADE, related_name='orders_related_tax')
 
-
+    class Meta:
+        verbose_name_plural = "orders"
 
     def __str__(self):
         return self.tracking_id

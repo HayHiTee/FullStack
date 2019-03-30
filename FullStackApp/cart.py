@@ -10,6 +10,7 @@ class Cart:
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
+        self.original_cart = cart
         self.cart = cart
 
     def add(self, product, quantity=1, update_quantity=False):
@@ -43,6 +44,8 @@ class Cart:
         for product in products:
             self.cart[str(product.id)]['product'] = product
         print("later cart", self.cart)
+        # print("original cart", self.original_cart)
+        # self.session[settings.CART_SESSION_ID] = self.original_cart
         for item in self.cart.values():
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']

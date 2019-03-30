@@ -10,3 +10,5 @@ psycopg2-binary == 2.7.7
 django-xff
 
 django-paypal
+
+stripe

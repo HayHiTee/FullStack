@@ -35,7 +35,7 @@ class ListOrders(ListView):
     def get_queryset(self):
         qs = super().get_queryset()
         customer = Customer.objects.get(user = self.request.user)
-        qs = qs.filter(customer=customer)
+        qs = qs.filter(customer=customer, has_paid=True)
         return qs
 
 
@@ -66,6 +66,10 @@ class ListProduct(ListView):
     model = Product
     context_object_name = 'products'
     paginate_by = 9
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.order_by('id')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context_data = super().get_context_data()
@@ -140,7 +144,7 @@ class CartViewList(View):
 
     pass
 
-# Order SUccess page Class
+# Order Success page Class
 class CartOrderSuccess(TemplateView):
     template_name = 'FullStackApp/cart_success.html'
 
@@ -165,7 +169,7 @@ class Checkout(FormView):
     form_class = CustomerOrderForm
     cart_shipping_fee = 0
     total_cart_plus_shipping = 0
-    success_url = reverse_lazy('FullStackApp:cart_order_success')
+    success_url = reverse_lazy('PaymentsApp:home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -258,13 +262,14 @@ class Checkout(FormView):
             print('customer', customer)
             send_email_account_created(email, email, password, self.request)
             order.save()
-        cart.clear()
-        response = super().form_valid(form)
 
+        response = super().form_valid(form)
+        self.request.session['cart_order_id'] = int(order.id)
+        cart.clear()
         return response
 
 
-# CHeck out for alaready registered and Valid AUTH CUSTOMER
+# CHeck out for already registered and Valid AUTH CUSTOMER
 @require_POST
 @transaction.atomic
 def check_out_auth_customer(request):
@@ -284,12 +289,12 @@ def check_out_auth_customer(request):
         total_cart_plus_shipping = cart.get_total_price() + cart_shipping_fee
     if not cart or not shipping:
         return redirect('FullStackApp:carts')
-    context['total_cart_plus_shipping'] = total_cart_plus_shipping
-    context['cart_shipping_fee'] = cart_shipping_fee
+    context['total_cart_plus_shipping'] = float(total_cart_plus_shipping)
+    context['cart_shipping_fee'] = float(cart_shipping_fee)
 
     customer = Customer.objects.get(user=request.user)
     order_cart = CartOrder()
-    order = order_cart.create_order(total_amount=total_cart_plus_shipping, shipping=shipping)
+    order = order_cart.create_order(total_amount=float(total_cart_plus_shipping), shipping=shipping)
     order.customer = customer
     order.save()
     print('order', order)
@@ -312,8 +317,14 @@ def check_out_auth_customer(request):
     order_detail = OrderDetail.objects.bulk_create(
         [OrderDetail(**q) for q in cart_list]
     )
-
-    return redirect('FullStackApp:cart_order_success')
+    print(order.id)
+    del request.session['cart_shipping_id']
+    cart.clear()
+    request.session['cart_order_id'] = order.id
+    print(context)
+    # print(request.session.get('cart_order_id'))
+    print('done')
+    return redirect('PaymentsApp:home')
 
 
 def view_that_asks_for_money(request):

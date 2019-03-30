@@ -23,6 +23,7 @@ from FullStackApp.views import CustomerRegistrationView
 
 urlpatterns = [
                   path('', include('FullStackApp.urls')),
+                  path('orders/payments/', include('payments.urls')),
                   re_path(r'^paypal/', include('paypal.standard.ipn.urls')),
                   path('admin/', admin.site.urls),
                   path('accounts/login/', auth_views.LoginView.as_view(), name='login'),

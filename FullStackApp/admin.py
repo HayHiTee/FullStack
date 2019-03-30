@@ -46,8 +46,10 @@ class ProductCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Orders)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['tracking_id', 'customer', 'total_amount', 'created_on', 'shipped_on', 'status', 'comments',
+    list_display = ['tracking_id', 'has_paid', 'customer', 'total_amount', 'created_on', 'shipped_on', 'status', 'comments',
                     'auth_code', 'reference', 'shipping', 'tax']
+
+    list_filter = ('has_paid', 'created_on',)
     print(list_display)
 
 

@@ -32,12 +32,31 @@
     <!-- Cart -->
 
     <div class="cart_section">
-        <h3 class="text-center">Show me the money!</h3>
+        <h3 class="text-center">Your Payments</h3>
         <!-- writes out the form tag automatically -->
         <div class="text-center">
-        {{ form.render }}
-            </div>
-    </div>
+            <form action="{% url 'PaymentsApp:payment-charge' %}" method="POST">
+                {% csrf_token %}
+                <script
+                        src="https://checkout.stripe.com/checkout.js"
+                        class="stripe-button"
+                        data-description="Products Payment Amount of ${{ total_amount }}"
+                        data-key="{{ key }}"
+                        {#    data-image="/square-image.png"#}
+                        data-name="TShopShirt Payment Gateway"
+                        {#    data-description="2 widgets ($20.00)"#}
+                        data-amount= {{ stripe_amount }}
+                        data-locale="auto">
+                </script>
+            </form>
 
+            {#    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"#}
+            {#    data-key="{{ key }}"#}
+            {#    data-description="Products Payment Amount of ${{ total_amount }}"#}
+            {#    data-amount="{{ total_amount }}"#}
+            {#    data-locale="auto">#}
+            {#    </script>#}
+        </div>
+    </div>
 
 {% endblock %}

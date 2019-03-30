@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'FullStackApp.apps.FullstackappConfig',
+    'payments.apps.PaymentsConfig',
 ]
 
 MIDDLEWARE = [
@@ -190,6 +191,9 @@ PAYPAL_RECEIVER_EMAIL = 'codersserver-facilitator@gmail.com'
 
 
 PAYPAL_TEST = True
+
+STRIPE_SECRET_KEY = 'sk_test_JLRENiidqz9jZ7zFUxvgCUoj00NLYGj6rh'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_Li9BZXqk34Txmok3wmuFcZ0U00OXxrWwWN'
 
 XFF_TRUSTED_PROXY_DEPTH = 1
 

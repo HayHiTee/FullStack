@@ -102,6 +102,6 @@ def cart_pre_checkout(request):
     print(data)
     cart_shipping_id = data['cart_shipping_id']
     print(cart_shipping_id)
-    request.session['cart_shipping_id'] = cart_shipping_id
+    request.session['cart_shipping_id'] = int(cart_shipping_id)
     return redirect('FullStackApp:checkout')
 

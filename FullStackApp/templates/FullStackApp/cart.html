@@ -160,11 +160,13 @@
                                     <ul class="cart_items_list">
                                         {% for cart in carts %}
                                             <!-- Cart Item -->
+
                                             <li class="cart_item item_list d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
+
                                                 <div class="product d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
                                                     <div>
-                                                        <div class="product_image"><img
-                                                                src="{{ cart.product.image.url }}" alt=""></div>
+                                                        <div class="product_image"><img class="img-fluid"
+                                                                src="{{ cart.product.image.url }}" alt="" width="510px"></div>
                                                     </div>
                                                     <div class="product_name"><a
                                                             href="{% url 'FullStackApp:product-detail' cart.product.id %}">{{ cart.product.name }}</a>
@@ -188,7 +190,7 @@
                                                     <div class="product_quantity ml-lg-auto mr-lg-auto text-center">
                                                         <span id="{{ cart.product.id }}_quantity"
                                                               class="quantity product_text product_num ">{{ cart.quantity }}</span>
-                                                        <input type="hidden" id="{{ cart.product.id }}_" type="number"
+                                                        <input type="hidden" id="{{ cart.product.id }}_"
                                                                class="product_num_input" value="{{ cart.quantity }}">
                                                         <div class="qty_sub qty_button trans_200 text-center">
                                                             <span>-</span></div>
