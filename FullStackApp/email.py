@@ -19,7 +19,7 @@ def send_email(subject, body, to_email):
 
 # Email function that sends order details to customer
 def send_order_email(to_email, tracking_id, request):
-    subject = 'Account Creation'
+    subject = 'Order Success'
     current_site = get_current_site(request)
     domain = current_site.domain
     protocol = 'https' if request.is_secure else 'http'
