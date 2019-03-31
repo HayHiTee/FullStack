@@ -280,8 +280,18 @@
 	{
 		font-size: 24px;
 	}
+
+    .cart_item
+	{
+		height: auto;
+		margin-left: 150px;
+	}
 }
 
+/*@media only screen and (max-width: 766px)*/
+/*{*/
+
+/*}*/
 /************
 11. 575px
 ************/
@@ -428,6 +438,12 @@
 	.breadcrumbs ul li, .breadcrumbs ul li a
 	{
 		font-size: 14px;
+	}
+
+    .cart_item
+	{
+		height: auto;
+		margin-left: 100px;
 	}
 }
 
