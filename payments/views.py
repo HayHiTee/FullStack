@@ -47,7 +47,7 @@ def charge(request):
         if 'cart_order_id' in request.session:
             cart_order_id = request.session['cart_order_id']
             order = Orders.objects.get(id=cart_order_id)
-        del request.session['cart_order_id']
+            del request.session['cart_order_id']
 
         if order is None:
             redirect('PaymentsApp:payment-failure')
