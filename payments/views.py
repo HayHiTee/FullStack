@@ -50,7 +50,8 @@ def charge(request):
             del request.session['cart_order_id']
 
         if order is None:
-            redirect('PaymentsApp:payment-failure')
+            return redirect('PaymentsApp:payment-failure')
+
         description = 'Products Payment Amount of $ {}'.format(order.total_amount)
         charge = stripe.Charge.create(
             amount=round(order.total_amount*100),
