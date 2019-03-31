@@ -10,6 +10,7 @@ from django.views.generic.base import TemplateView
 
 from FullStack import settings
 from FullStackApp.cart import Cart
+from FullStackApp.email import send_order_email
 from FullStackApp.models import Orders
 
 stripe.api_key = settings.STRIPE_SECRET_KEY # new
@@ -61,6 +62,7 @@ def charge(request):
         cart = Cart(request)
         order.has_paid = True
         order.save()
+        send_order_email(order.customer.user.email, order.tracking_id, request)
         cart.clear()
         return render(request, 'FullStackApp/cart_success.html')
 

@@ -240,7 +240,7 @@ class Checkout(FormView):
 
         print('order detail', order_detail)
         # //send email to customer on order
-        send_order_email(email, order.tracking_id, self.request)
+        # send_order_email(email, order.tracking_id, self.request)
         print(create_account)
         if create_account:
             password = User.objects.make_random_password()
