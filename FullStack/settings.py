@@ -12,11 +12,13 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
-import dj_database_url
-import django_heroku
+# import dj_database_url
+# import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -38,14 +40,14 @@ ENV_TYPE = os.environ.get('ENV_TYPE')
 
 # DEFAULT DATABASE
 DB_DETAILS = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+}
 
 # For production in Heroku
 if ENV_TYPE == 'HEROKU':
-    # DB_DETAILS = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
-    # DEBUG = False
+# DB_DETAILS = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+# DEBUG = False
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -182,13 +184,11 @@ print(os.environ.get('SEND_GRID_API_KEY'))
 
 EMAIL_USE_TLS = True
 
-
 DEFAULT_FROM_EMAIL = 'Turing Shopping <noreply@example.com>'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 PAYPAL_RECEIVER_EMAIL = 'codersserver-facilitator@gmail.com'
-
 
 PAYPAL_TEST = True
 
@@ -207,5 +207,5 @@ XFF_NO_SPOOFING = True
 # XFF_EXEMPT_STEALTH = True
 
 # Should be at the bottoom
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
 # print(DATABASES)

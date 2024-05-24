@@ -75,12 +75,12 @@ class TaxAdmin(admin.ModelAdmin):
 
 @admin.register(Attribute)
 class AttributeAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Attribute._meta.get_fields()]
+    list_display = ['name']
 
 
 @admin.register(AttributeValue)
 class AttributeValueAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in AttributeValue._meta.get_fields()]
+    list_display = ['attribute', 'value']
 
 
 @admin.register(ProductAttribute)

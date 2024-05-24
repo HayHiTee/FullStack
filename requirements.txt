@@ -1,14 +1,12 @@
-Pillow == 5.4.1
-django == 2.1.7
+Pillow == 10.3.0
+django == 5.0.6
 
-gunicorn
+gunicorn == 22.0.0
 
-django-heroku
+psycopg2-binary == 2.9.9
 
-psycopg2-binary == 2.7.7
+django-xff == 1.4.0
 
-django-xff
+django-paypal == 2.1
 
-django-paypal
-
-stripe
+stripe == 9.8.0
